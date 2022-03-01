@@ -81,8 +81,11 @@ def main():
     pygame.init()
     screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
     altitude_font = pygame.font.SysFont("monospace", 16)
+    n_obstacle = 5
     airplain = Airplain()
-    obstacle = Obstacle()
+    obstacle_l = []
+    for i in range(0, n_obstacle):
+        obstacle_l.append(Obstacle())
 
     running = True
     while running:
@@ -125,8 +128,10 @@ def main():
         screen.blit(airplain.surf, airplain.rect)
 
         # Draw obstacle on screen
-
-        screen.blit(obstacle.surf, obstacle.rect)
+        for obstacle in obstacle_l:
+            screen.blit(obstacle.surf, obstacle.rect)
+            height = altitude_font.render(f"{obstacle.height}m", True, (255, 255, 255))
+            screen.blit(height, (obstacle.pos[0], obstacle.pos[1]))
 
         # Update the display
         pygame.display.flip()
