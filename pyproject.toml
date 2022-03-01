@@ -1,0 +1,41 @@
+# description if packaging system requirements
+[build-system]
+requires = [
+    "flit_core >=3.2,<4",
+]
+build-backend = "flit_core.buildapi"
+
+# description of current module
+[project]
+name = "mustards-game"
+authors = [
+    {name = "Maksim Beliaev", email = "maksim.beliaev@ansys.com"},
+]
+readme = "README.md"
+requires-python = ">=3.7"
+classifiers = ["License :: OSI Approved :: MIT License"]
+dynamic = ["version", "description"]
+
+dependencies = [
+    "pygame>2,<3",
+]
+
+# development dependencies
+[project.optional-dependencies]
+test = [
+    "pre-commit==2.15.0",
+    "mypy==0.910",
+    "pytest==6.2.5",
+    "pytest-cov==3.0.0",
+]
+
+deploy = [
+    "flit==3.4.0",
+]
+
+[project.urls]
+Home = "https://github.com/beliaev-maksim/ansys-hackathon-mustards"
+
+[tool.isort]
+profile = "black"
+
