@@ -1,17 +1,16 @@
 import pygame
-from pygame.locals import (
-    K_UP,
-    K_DOWN,
-    K_LEFT,
-    K_RIGHT,
-    K_ESCAPE,
-    KEYDOWN,
-    QUIT,
-)
+from pygame.locals import K_DOWN
+from pygame.locals import K_ESCAPE
+from pygame.locals import K_LEFT
+from pygame.locals import K_RIGHT
+from pygame.locals import K_UP
+from pygame.locals import KEYDOWN
+from pygame.locals import QUIT
 
 # Define constants for the screen width and height
 SCREEN_WIDTH = 900
 SCREEN_HEIGHT = 900
+
 
 class Airplain(pygame.sprite.Sprite):
     def __init__(self):
@@ -32,7 +31,12 @@ class Airplain(pygame.sprite.Sprite):
 
         This should be end of the game.
         """
-        if self.rect.left < 0 or self.rect.right > SCREEN_WIDTH or self.rect.top <= 0 or self.rect.bottom >= SCREEN_HEIGHT:
+        if (
+            self.rect.left < 0
+            or self.rect.right > SCREEN_WIDTH
+            or self.rect.top <= 0
+            or self.rect.bottom >= SCREEN_HEIGHT
+        ):
             return True
         return False
 
@@ -42,7 +46,7 @@ class Airplain(pygame.sprite.Sprite):
         :param pressed_keys:
         :return:
         """
-        # consider https://stackoverflow.com/questions/4183208/how-do-i-rotate-an-image-around-its-center-using-pygame/54714144#54714144
+        # https://stackoverflow.com/questions/4183208/how-do-i-rotate-an-image-around-its-center-using-pygame
         if pressed_keys[K_LEFT]:
             if self.direction == (1, 0):
                 self.direction = (0, -1)
@@ -70,6 +74,7 @@ class Airplain(pygame.sprite.Sprite):
         elif pressed_keys[K_UP]:
             if self.altitude <= 1999:
                 self.altitude += 1
+
 
 def main():
     pygame.init()
@@ -121,6 +126,6 @@ def main():
         pygame.display.flip()
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
 
     main()
