@@ -6,6 +6,7 @@ from pygame.locals import K_RIGHT
 from pygame.locals import K_UP
 from pygame.locals import KEYDOWN
 from pygame.locals import QUIT
+from mustardsgame.obstacle import Obstacle
 
 # Define constants for the screen width and height
 SCREEN_WIDTH = 900
@@ -81,6 +82,7 @@ def main():
     screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
     altitude_font = pygame.font.SysFont("monospace", 16)
     airplain = Airplain()
+    obstacle = Obstacle()
 
     running = True
     while running:
@@ -121,6 +123,10 @@ def main():
 
         # Draw the airplain on the screen
         screen.blit(airplain.surf, airplain.rect)
+
+        # Draw obstacle on screen
+
+        screen.blit(obstacle.surf, obstacle.rect)
 
         # Update the display
         pygame.display.flip()
