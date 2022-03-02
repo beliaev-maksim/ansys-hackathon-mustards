@@ -135,7 +135,10 @@ def main():
         # Draw the gas cloud
         gas = airplain.gas_cloud
         gas.draw(screen)
-        # gas.degrade_gas()
+        gas.degrade_gas()
+
+        # Draw the airplain on the screen
+        screen.blit(airplain.surf, airplain.rect)
         # Update the display
         pygame.display.flip()
 
