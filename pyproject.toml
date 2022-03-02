@@ -19,6 +19,7 @@ dynamic = ["version", "description"]
 
 dependencies = [
     "pygame>2,<3",
+    "numpy",
 ]
 
 # development dependencies

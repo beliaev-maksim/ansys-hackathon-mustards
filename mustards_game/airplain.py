@@ -6,7 +6,8 @@ from pygame.locals import K_RIGHT
 from pygame.locals import K_UP
 from pygame.locals import KEYDOWN
 from pygame.locals import QUIT
-from mustardsgame.gas_cloud import GasCloud
+
+from mustards_game.gas_cloud import GasCloud
 
 # Define constants for the screen width and height
 SCREEN_WIDTH = 900
@@ -34,7 +35,6 @@ class Airplain(pygame.sprite.Sprite):
         self.current_pos_x += self.direction[0]
         self.current_pos_y += self.direction[1]
         self.gas_cloud.update(self.current_pos_x, self.current_pos_y, self.altitude)
-
 
     def check_hit_wall(self):
         """Check if airplain hits the outer bounderaies of the screen.
@@ -135,7 +135,7 @@ def main():
         # Draw the gas cloud
         gas = airplain.gas_cloud
         gas.draw(screen)
-        #gas.degrade_gas()
+        # gas.degrade_gas()
         # Update the display
         pygame.display.flip()
 
