@@ -7,9 +7,10 @@ build-backend = "flit_core.buildapi"
 
 # description of current module
 [project]
-name = "mustards-game"
+name = "mustards_game"
 authors = [
     {name = "Maksim Beliaev", email = "maksim.beliaev@ansys.com"},
+    {name = "Stefan Thoene", email = "stefan.thoene@ansys.com"},
 ]
 readme = "README.md"
 requires-python = ">=3.7"
@@ -18,6 +19,7 @@ dynamic = ["version", "description"]
 
 dependencies = [
     "pygame>2,<3",
+    "numpy",
 ]
 
 # development dependencies
