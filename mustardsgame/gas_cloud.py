@@ -1,9 +1,10 @@
 import pygame
-
+import numpy as np
 
 # Define constants for the screen width and height
-GAS_SIZE = 25
-
+GAS_SIZE = 10
+SCREEN_WIDTH = 900
+SCREEN_HEIGHT = 900
 
 class Gas:
     """
@@ -14,8 +15,8 @@ class Gas:
         self.gas_position_x = position_x
         self.gas_position_y = position_y
         # gas density information 128 as default starting value
-        self.gas_level = 255
-
+        self.gas_level = 0
+        self.altitude = 0
         # pygame objects
         self.gas_surf = pygame.Surface((GAS_SIZE, GAS_SIZE))
         self.gas_surf.fill((self.gas_level, 255, self.gas_level))
@@ -82,28 +83,49 @@ class GasCloud():
     this class describe the gas cloud separated by airplane
     """
     def __init__(self):
-        self.positions = {tuple([0, 0]): Gas(0, 0)}
+        self.positions = np.zeros((int(SCREEN_WIDTH/GAS_SIZE), int(SCREEN_HEIGHT/GAS_SIZE)), dtype=Gas)
+        for x in range(0, int(SCREEN_WIDTH/GAS_SIZE)):
+            for y in range(0, int(SCREEN_HEIGHT/GAS_SIZE)):
+                self.positions[x,y] = Gas(x*GAS_SIZE,y*GAS_SIZE)
 
-    def update(self, position_x, position_y):
+    def update(self, position_x, position_y, altitude):
         """
-        This function add new gas pixel to the GasCloud / update the density of gas pixel
+        This function add the density of gas pixel and altitude of a gas pixel
+        :param altitude:
         :param position_x: int
         :param position_y: int
         :return: None
         """
-        if tuple([position_x, position_y]) not in self.positions:
+        self.positions[int(position_x/GAS_SIZE),int(position_y/GAS_SIZE)].gas_level += 255/GAS_SIZE
+        self.positions[int(position_x/GAS_SIZE),int(position_y/GAS_SIZE)].altitude = altitude
 
-            self.positions[tuple([position_x, position_y])] = Gas(position_x, position_y)
-        else:
-            print("here is over lap")
-            self.positions[tuple([position_x, position_y])].increase_level()
+    def degrade_gas(self):
+        for x in range(0, int(SCREEN_WIDTH/GAS_SIZE)):
+            for y in range(0, int(SCREEN_HEIGHT/GAS_SIZE)):
+                if self.positions[x, y].altitude > 499:
+                    self.positions[x, y].gas_level /= 2
+                    self.positions[x, y].altitude /= 2
+                    if x != int(SCREEN_WIDTH/GAS_SIZE)-1 and y != int(SCREEN_HEIGHT/GAS_SIZE)-1 and x != 0 and y != 0:
+                        self.positions[x - 1, y].gas_level = self.positions[x, y].gas_level / 4
+                        self.positions[x + 1, y].gas_level = self.positions[x, y].gas_level / 4
+                        self.positions[x, y - 1].gas_level = self.positions[x, y].gas_level / 4
+                        self.positions[x, y + 1].gas_level = self.positions[x, y].gas_level / 4
+                        self.positions[x - 1, y].altitude = self.positions[x, y].altitude
+                        self.positions[x + 1, y].altitude = self.positions[x, y].altitude
+                        self.positions[x, y - 1].altitude = self.positions[x, y].altitude
+                        self.positions[x, y + 1].altitude = self.positions[x, y].altitude
 
     def get_area_covered(self):
         """
         This function return area covered by GasCloud
         :return: int
         """
-        return len(self.positions)
+        coverage =0
+        for x in range(0, int(SCREEN_WIDTH / GAS_SIZE)):
+            for y in range(0, int(SCREEN_HEIGHT / GAS_SIZE)):
+                if self.positions[x,y].gas_level>100:
+                    coverage += 1
+        return coverage
 
     def get_cloud_volume(self):
         """
@@ -115,9 +137,9 @@ class GasCloud():
             total_volume += self.positions[position].level
         return total_volume
 
-    def positions(self):
-        """
-        this function returns dictionary of gas pixels
-        :return: dict
-        """
-        return self.positions
+    def draw(self, myscreen):
+        for x in range(0, int(SCREEN_WIDTH / GAS_SIZE)):
+            for y in range(0, int(SCREEN_HEIGHT / GAS_SIZE)):
+                if self.positions[x,y].level!=0:
+                    myscreen.blit(self.positions[x,y].surf,self.positions[x,y].rect)
+
