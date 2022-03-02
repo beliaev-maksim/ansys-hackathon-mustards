@@ -135,7 +135,7 @@ def main():
         # Draw the gas cloud
         gas = airplain.gas_cloud
         gas.draw(screen)
-        gas.degrade_gas()
+        #gas.degrade_gas()
         # Update the display
         pygame.display.flip()
 
