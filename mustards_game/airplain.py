@@ -8,6 +8,7 @@ from pygame.locals import KEYDOWN
 from pygame.locals import QUIT
 
 from mustards_game.gas_cloud import GasCloud
+from mustards_game.obstacle import Obstacle
 
 # Define constants for the screen width and height
 SCREEN_WIDTH = 900
@@ -90,7 +91,11 @@ def main():
     pygame.init()
     screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
     altitude_font = pygame.font.SysFont("monospace", 16)
+    n_obstacle = 5
     airplain = Airplain()
+    obstacle_l = []
+    for i in range(0, n_obstacle):
+        obstacle_l.append(Obstacle())
 
     running = True
     while running:
@@ -139,6 +144,12 @@ def main():
 
         # Draw the airplain on the screen
         screen.blit(airplain.surf, airplain.rect)
+        # Draw obstacle on screen
+        for obstacle in obstacle_l:
+            screen.blit(obstacle.surf, obstacle.rect)
+            height = altitude_font.render(f"{obstacle.height}m", True, (255, 255, 255))
+            screen.blit(height, (obstacle.pos[0], obstacle.pos[1]))
+
         # Update the display
         pygame.display.flip()
 
