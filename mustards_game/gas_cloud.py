@@ -93,19 +93,17 @@ class GasCloud:
         :param position_y: int
         :return: None
         """
-        self.positions[int(position_x / GAS_SIZE), int(position_y / GAS_SIZE)].gas_level += 255 / GAS_SIZE
-        if self.positions[int(position_x / GAS_SIZE), int(position_y / GAS_SIZE)].gas_level > self.max_level:
-            self.max_level = self.positions[int(position_x / GAS_SIZE), int(position_y / GAS_SIZE)].gas_level
+        self.positions[int(position_x / GAS_SIZE), int(position_y / GAS_SIZE)].gas_level += 1000 / GAS_SIZE
         self.positions[int(position_x / GAS_SIZE), int(position_y / GAS_SIZE)].altitude = altitude
 
     def degrade_gas(self):
         max_level_adjust = 0
-        degradation = 12
+        degradation = 1.25
         for x in range(int(SCREEN_WIDTH / GAS_SIZE)):
             for y in range(int(SCREEN_HEIGHT / GAS_SIZE)):
-                if self.positions[x, y].altitude > 499:
-                    self.positions[x, y].gas_level /= degradation / 10
-                    self.positions[x, y].altitude /= 2
+                if self.positions[x, y].altitude > 249:
+                    self.positions[x, y].gas_level /= degradation
+                    self.positions[x, y].altitude /= degradation
                     if self.positions[x, y].gas_level > max_level_adjust:
                         max_level_adjust = self.positions[x, y].gas_level
                     if (
@@ -114,10 +112,10 @@ class GasCloud:
                         and x != 0
                         and y != 0
                     ):
-                        self.positions[x - 1, y].gas_level += self.positions[x, y].gas_level / degradation
-                        self.positions[x + 1, y].gas_level += self.positions[x, y].gas_level / degradation
-                        self.positions[x, y - 1].gas_level += self.positions[x, y].gas_level / degradation
-                        self.positions[x, y + 1].gas_level += self.positions[x, y].gas_level / degradation
+                        self.positions[x - 1, y].gas_level += (self.positions[x, y].gas_level * (degradation - 1)) / 4
+                        self.positions[x + 1, y].gas_level += (self.positions[x, y].gas_level * (degradation - 1)) / 4
+                        self.positions[x, y - 1].gas_level += (self.positions[x, y].gas_level * (degradation - 1)) / 4
+                        self.positions[x, y + 1].gas_level += (self.positions[x, y].gas_level * (degradation - 1)) / 4
                         self.positions[x - 1, y].altitude = self.positions[x, y].altitude
                         self.positions[x + 1, y].altitude = self.positions[x, y].altitude
                         self.positions[x, y - 1].altitude = self.positions[x, y].altitude
