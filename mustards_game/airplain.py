@@ -92,6 +92,7 @@ def main():
     screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
     altitude_font = pygame.font.SysFont("monospace", 16)
     n_obstacle = 5
+    score_font = pygame.font.SysFont("monospace", 16)
     airplain = Airplain()
     obstacle_l = []
     for i in range(0, n_obstacle):
@@ -132,6 +133,7 @@ def main():
         screen.fill((0, 0, 0))
 
         text = altitude_font.render(f"Altitude: {airplain.altitude}m", True, (255, 0, 0))
+
         screen.blit(text, (20, 20))
 
         # Draw the airplain on the screen
@@ -141,7 +143,8 @@ def main():
         gas = airplain.gas_cloud
         gas.draw(screen)
         gas.degrade_gas()
-
+        score = score_font.render(f"Lethalcoverage: {gas.get_area_covered()}", True, (255, 255, 255))
+        screen.blit(score, (500, 20))
         # Draw the airplain on the screen
         screen.blit(airplain.surf, airplain.rect)
         # Draw obstacle on screen
