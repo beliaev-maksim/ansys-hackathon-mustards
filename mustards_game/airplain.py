@@ -6,7 +6,8 @@ from pygame.locals import K_RIGHT
 from pygame.locals import K_UP
 from pygame.locals import KEYDOWN
 from pygame.locals import QUIT
-from mustardsgame.obstacle import Obstacle
+
+from mustards_game.obstacle import Obstacle
 
 # Define constants for the screen width and height
 SCREEN_WIDTH = 900
