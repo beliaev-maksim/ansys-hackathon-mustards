@@ -1,3 +1,5 @@
+import math
+
 import pygame
 from pygame.locals import K_DOWN
 from pygame.locals import K_ESCAPE
@@ -32,12 +34,16 @@ class Airplane(pygame.sprite.Sprite):
         self.fuel = 10000
 
     def fly(self):
-        x = self.direction[0] * 1
-        y = self.direction[1] * 1
-        self.rect.move_ip(x, y)
-
+        # Store new float position
         self.current_pos_x += self.direction[0]
         self.current_pos_y += self.direction[1]
+
+        # Compare new float position with the actual position of the rect
+        # If new position differs by more than 1 pixel, move the rect
+        move_x = int(self.current_pos_x - self.rect.left)
+        move_y = int(self.current_pos_y - self.rect.top)
+        self.rect.move_ip(move_x, move_y)
+
         self.gas_cloud.update(self.current_pos_x, self.current_pos_y, self.altitude)
         self.consume_fuel()
 
@@ -66,25 +72,26 @@ class Airplane(pygame.sprite.Sprite):
         :return:
         """
         # https://stackoverflow.com/questions/4183208/how-do-i-rotate-an-image-around-its-center-using-pygame
-        if pressed_keys[K_LEFT]:
-            if self.direction == (1, 0):
-                self.direction = (0, -1)
-            elif self.direction == (0, -1):
-                self.direction = (-1, 0)
-            elif self.direction == (-1, 0):
-                self.direction = (0, 1)
-            elif self.direction == (0, 1):
-                self.direction = (1, 0)
 
+        rot_step = 45  # degrees
+        r = 1
+
+        rot_step = math.radians(rot_step)
+        direction = list(self.direction)
+        x = direction[1]
+        y = direction[0]
+        angle = math.atan2(y, x)
+
+        if pressed_keys[K_LEFT]:
+            angle = angle + rot_step
         elif pressed_keys[K_RIGHT]:
-            if self.direction == (1, 0):
-                self.direction = (0, 1)
-            elif self.direction == (0, 1):
-                self.direction = (-1, 0)
-            elif self.direction == (-1, 0):
-                self.direction = (0, -1)
-            elif self.direction == (0, -1):
-                self.direction = (1, 0)
+            angle = angle - rot_step
+
+        x = math.cos(angle) * r
+        y = math.sin(angle) * r
+        direction_new = (y, x)
+
+        self.direction = direction_new
 
     def change_altitude(self, pressed_keys):
         if pressed_keys[K_DOWN]:
@@ -154,9 +161,6 @@ def main():
 
         text = altitude_font.render(f"Altitude: {airplane.altitude}m", True, (255, 0, 0))
         screen.blit(text, (20, 20))
-
-        # Draw the airplane on the screen
-        screen.blit(airplane.surf, airplane.rect)
 
         # Draw the gas cloud
         gas = airplane.gas_cloud
