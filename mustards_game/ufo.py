@@ -11,6 +11,7 @@ from pygame.locals import QUIT
 
 from mustards_game.gas_cloud import GasCloud
 from mustards_game.obstacle import Obstacle
+from mustards_game.score_log import ScoreLog
 
 # Define constants for the screen width and height
 SCREEN_WIDTH = 900
@@ -100,6 +101,7 @@ def main():
     altitude_font = pygame.font.SysFont("monospace", 16)
     n_obstacle = 5
     ufo = UFO()
+    gas = ufo.gas_cloud
     # Create sprite group of obstacles
     obstacles = pygame.sprite.Group()
     score_font = pygame.font.SysFont("monospace", 16)
@@ -140,7 +142,6 @@ def main():
         screen.blit(text, (20, 20))
 
         # Draw the gas cloud
-        gas = ufo.gas_cloud
         gas.draw(screen)
         gas.degrade_gas()
         score = score_font.render(f"Lethalcoverage: {gas.get_area_covered()}", True, (255, 255, 255))
@@ -163,6 +164,19 @@ def main():
 
         # Update the display
         pygame.display.flip()
+
+    SL = ScoreLog()
+    history_score = SL.read_score()
+    if not history_score:
+        print("you have done great")
+    elif gas.get_area_covered() < int(history_score[2]):
+        print("please continue")
+    elif int(history_score[0]) > gas.get_area_covered() > int(history_score[2]):
+        print("nice, you are in list")
+    else:
+        print("you have new record")
+    SL.write_score(gas.get_area_covered())
+    SL.display(screen)
 
 
 if __name__ == "__main__":
