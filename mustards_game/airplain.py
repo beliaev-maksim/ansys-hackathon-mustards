@@ -93,9 +93,9 @@ def main():
     altitude_font = pygame.font.SysFont("monospace", 16)
     n_obstacle = 5
     airplane = Airplane()
-
     # Create sprite group of obstacles
     obstacles = pygame.sprite.Group()
+    score_font = pygame.font.SysFont("monospace", 16)
     for i in range(0, n_obstacle):
         new_obstacle = Obstacle()
         obstacles.add(new_obstacle)
@@ -144,6 +144,8 @@ def main():
         gas = airplane.gas_cloud
         gas.draw(screen)
         gas.degrade_gas()
+        score = score_font.render(f"Lethalcoverage: {gas.get_area_covered()}", True, (255, 255, 255))
+        screen.blit(score, (500, 20))
 
         # Draw the airplane on the screen
         screen.blit(airplane.surf, airplane.rect)
