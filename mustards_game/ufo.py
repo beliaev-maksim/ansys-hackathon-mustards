@@ -16,6 +16,8 @@ from mustards_game.obstacle import Obstacle
 SCREEN_WIDTH = 900
 SCREEN_HEIGHT = 900
 
+MAX_ALTITUDE = 1000
+
 
 class UFO(pygame.sprite.Sprite):
     def __init__(self):
@@ -29,6 +31,7 @@ class UFO(pygame.sprite.Sprite):
         self.gas_cloud = GasCloud()
         self.current_pos_x = 0
         self.current_pos_y = 0
+        self.fuel = 10000
 
     def fly(self):
         # Store new float position
@@ -42,6 +45,11 @@ class UFO(pygame.sprite.Sprite):
         self.rect.move_ip(move_x, move_y)
 
         self.gas_cloud.update(self.current_pos_x, self.current_pos_y, self.altitude)
+        self.consume_fuel()
+
+    def consume_fuel(self):
+        if self.fuel > 0:
+            self.fuel -= 1
 
     def check_hit_wall(self):
         """Check if airplain hits the outer bounderaies of the screen.
@@ -90,14 +98,18 @@ class UFO(pygame.sprite.Sprite):
             self.altitude -= 1
 
         elif pressed_keys[K_UP]:
-            if self.altitude <= 1999:
-                self.altitude += 1
+            if self.fuel > 0:
+                # go up only if you have fuel
+                if self.altitude <= MAX_ALTITUDE:
+                    self.altitude += 1
+                    self.consume_fuel()
 
 
 def main():
     pygame.init()
     screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
     altitude_font = pygame.font.SysFont("monospace", 16)
+    fuel_font = pygame.font.SysFont("monospace", 16)
     n_obstacle = 5
     ufo = UFO()
     # Create sprite group of obstacles
@@ -114,8 +126,14 @@ def main():
         clock.tick(180)
 
         ufo.fly()
+
+        if ufo.fuel <= 0:
+            # when we are out of fuel, start to decrease altitude
+            ufo.altitude -= 5
+
         if ufo.check_hit_wall() or ufo.altitude <= 0:
             # game over
+            print("UFO crashed! Game Over!")
             running = False
 
         # for loop through the event queue
@@ -146,13 +164,16 @@ def main():
         score = score_font.render(f"Lethalcoverage: {gas.get_area_covered()}", True, (255, 255, 255))
         screen.blit(score, (500, 20))
 
+        fuel = fuel_font.render(f"Fuel left: {ufo.fuel}L", True, (255, 255, 255))
+        screen.blit(fuel, (300, 20))
+
         # Draw obstacle on screen
         for obstacle in obstacles:
             screen.blit(obstacle.surf, obstacle.rect)
             height = altitude_font.render(f"{obstacle.height}m", True, (255, 255, 255))
             screen.blit(height, (obstacle.pos[0], obstacle.pos[1]))
 
-        # Draw the ufo on the screen
+        # Draw UFO on the screen at the last step. It must overlay other objects
         screen.blit(ufo.surf, ufo.rect)
 
         # Check collision with obstacles
