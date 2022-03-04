@@ -15,7 +15,7 @@ SCREEN_WIDTH = 900
 SCREEN_HEIGHT = 900
 
 
-class Airplain(pygame.sprite.Sprite):
+class Airplane(pygame.sprite.Sprite):
     def __init__(self):
         super().__init__()
         self.surf = pygame.Surface((25, 25))
@@ -92,10 +92,13 @@ def main():
     screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
     altitude_font = pygame.font.SysFont("monospace", 16)
     n_obstacle = 5
-    airplain = Airplain()
-    obstacle_l = []
+    airplane = Airplane()
+
+    # Create sprite group of obstacles
+    obstacles = pygame.sprite.Group()
     for i in range(0, n_obstacle):
-        obstacle_l.append(Obstacle())
+        new_obstacle = Obstacle()
+        obstacles.add(new_obstacle)
 
     running = True
     while running:
@@ -103,8 +106,8 @@ def main():
         clock = pygame.time.Clock()
         clock.tick(180)
 
-        airplain.fly()
-        if airplain.check_hit_wall() or airplain.altitude <= 0:
+        airplane.fly()
+        if airplane.check_hit_wall() or airplane.altitude <= 0:
             # game over
             running = False
 
@@ -114,8 +117,8 @@ def main():
                 # Get all the keys currently pressed, do it inside keydown event
                 # to ensure a single click if user holds the button
                 pressed_keys = pygame.key.get_pressed()
-                # Update the airplain sprite based on user keypresses
-                airplain.rotate(pressed_keys)
+                # Update the airplane sprite based on user keypresses
+                airplane.rotate(pressed_keys)
 
                 # If the Esc key is pressed, then exit the main loop
                 if event.key == K_ESCAPE:
@@ -126,29 +129,36 @@ def main():
                 running = False
 
         pressed_keys = pygame.key.get_pressed()
-        airplain.change_altitude(pressed_keys)
+        airplane.change_altitude(pressed_keys)
 
         # Fill the screen with black
         screen.fill((0, 0, 0))
 
-        text = altitude_font.render(f"Altitude: {airplain.altitude}m", True, (255, 0, 0))
+        text = altitude_font.render(f"Altitude: {airplane.altitude}m", True, (255, 0, 0))
         screen.blit(text, (20, 20))
 
-        # Draw the airplain on the screen
-        screen.blit(airplain.surf, airplain.rect)
+        # Draw the airplane on the screen
+        screen.blit(airplane.surf, airplane.rect)
 
         # Draw the gas cloud
-        gas = airplain.gas_cloud
+        gas = airplane.gas_cloud
         gas.draw(screen)
         gas.degrade_gas()
 
-        # Draw the airplain on the screen
-        screen.blit(airplain.surf, airplain.rect)
+        # Draw the airplane on the screen
+        screen.blit(airplane.surf, airplane.rect)
+
         # Draw obstacle on screen
-        for obstacle in obstacle_l:
+        for obstacle in obstacles:
             screen.blit(obstacle.surf, obstacle.rect)
             height = altitude_font.render(f"{obstacle.height}m", True, (255, 255, 255))
             screen.blit(height, (obstacle.pos[0], obstacle.pos[1]))
+
+        # Check collision with obstacles
+        obstacle_collided = pygame.sprite.spritecollide(airplane, obstacles, False)
+        if len(obstacle_collided) and obstacle_collided[0].height >= airplane.altitude:
+            running = False
+            print("Collision with an obstacle! GAME OVER!")
 
         # Update the display
         pygame.display.flip()
