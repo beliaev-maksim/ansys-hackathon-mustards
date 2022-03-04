@@ -45,9 +45,9 @@ class UFO(pygame.sprite.Sprite):
         move_y = int(self.current_pos_y - self.rect.top)
         self.rect.move_ip(move_x, move_y)
 
-        self.gas_cloud.update(self.current_pos_x + int(self.size/2),
-                              self.current_pos_y + int(self.size/2),
-                              self.altitude)
+        self.gas_cloud.update(
+            self.current_pos_x + int(self.size/2), self.current_pos_y + int(self.size/2), self.altitude
+        )
         self.consume_fuel()
 
     def consume_fuel(self):
