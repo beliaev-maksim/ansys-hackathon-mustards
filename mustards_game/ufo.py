@@ -153,12 +153,11 @@ def main():
             screen.blit(height, (obstacle.pos[0], obstacle.pos[1]))
 
         # Draw the ufo on the screen
-        # screen.blit(ufo.surf, (100, 100))
         screen.blit(ufo.surf, ufo.rect)
 
         # Check collision with obstacles
         obstacle_collided = pygame.sprite.spritecollide(ufo, obstacles, False)
-        if len(obstacle_collided) and obstacle_collided[0].height >= ufo.altitude:
+        if obstacle_collided and obstacle_collided[0].height >= ufo.altitude:
             running = False
             print("Collision with an obstacle! GAME OVER!")
 
