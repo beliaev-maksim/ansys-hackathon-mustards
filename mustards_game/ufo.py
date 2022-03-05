@@ -23,7 +23,8 @@ MAX_ALTITUDE = 1000
 class UFO(pygame.sprite.Sprite):
     def __init__(self):
         super().__init__()
-        self.surf = pygame.Surface((25, 25))
+        self.size = 25
+        self.surf = pygame.Surface((self.size, self.size))
         self.surf.fill((255, 255, 255))
         self.rect = self.surf.get_rect()
         self.direction = (0, 1)
@@ -45,7 +46,9 @@ class UFO(pygame.sprite.Sprite):
         move_y = int(self.current_pos_y - self.rect.top)
         self.rect.move_ip(move_x, move_y)
 
-        self.gas_cloud.update(self.current_pos_x, self.current_pos_y, self.altitude)
+        self.gas_cloud.update(
+            self.current_pos_x + int(self.size / 2), self.current_pos_y + int(self.size / 2), self.altitude
+        )
         self.consume_fuel()
 
     def consume_fuel(self):
