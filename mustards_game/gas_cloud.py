@@ -84,6 +84,7 @@ class GasCloud:
             for y in range(int(SCREEN_HEIGHT / GAS_SIZE)):
                 self.positions[x, y] = Gas(x * GAS_SIZE, y * GAS_SIZE)
         self.max_level = 0
+        self.gas_density = {10: 0, 100: 0, 1000: 0, 10000: 0, 100000: 0}
 
     def update(self, position_x, position_y, altitude):
         """
@@ -120,7 +121,21 @@ class GasCloud:
                         self.positions[x + 1, y].altitude = self.positions[x, y].altitude
                         self.positions[x, y - 1].altitude = self.positions[x, y].altitude
                         self.positions[x, y + 1].altitude = self.positions[x, y].altitude
+
+                if self.positions[x, y].gas_level < 100:
+                    self.gas_density[10] += GAS_SIZE
+                elif self.positions[x, y].gas_level < 1000:
+                    self.gas_density[100] += GAS_SIZE
+                elif self.positions[x, y].gas_level < 10000:
+                    self.gas_density[1000] += GAS_SIZE
+                elif self.positions[x, y].gas_level < 100000:
+                    self.gas_density[10000] += GAS_SIZE
+                else:
+                    self.gas_density[100000] += GAS_SIZE
         self.max_level = max_level_adjust
+
+    def clean_gas_density_data(self):
+        self.gas_density = {10: 0, 100: 0, 1000: 0, 10000: 0, 100000: 0}
 
     def get_area_covered(self):
         """
@@ -131,7 +146,7 @@ class GasCloud:
         for x in range(int(SCREEN_WIDTH / GAS_SIZE)):
             for y in range(int(SCREEN_HEIGHT / GAS_SIZE)):
                 if self.positions[x, y].gas_level > 256:
-                    coverage += 1
+                    coverage += GAS_SIZE
         return coverage
 
     def get_cloud_volume(self):

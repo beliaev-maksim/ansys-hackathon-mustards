@@ -117,6 +117,7 @@ def main():
     # Create sprite group of obstacles
     obstacles = pygame.sprite.Group()
     score_font = pygame.font.SysFont("monospace", 16)
+    gas_density_font = pygame.font.SysFont("monospace", 16)
     for i in range(0, n_obstacle):
         new_obstacle = Obstacle()
         obstacles.add(new_obstacle)
@@ -164,6 +165,13 @@ def main():
         gas.degrade_gas()
         score = score_font.render(f"Lethalcoverage: {gas.get_area_covered()}", True, (255, 255, 255))
         screen.blit(score, (500, 20))
+        for item in gas.gas_density:
+            gas_density = gas_density_font.render(
+                f"area with density over{item}: {gas.gas_density[item]}",
+                True,
+                (255, 255 / math.log10(item), 255 / math.log10(item)),
+            )
+            screen.blit(gas_density, (500, 15 * math.log10(item) + 30))
 
         fuel = fuel_font.render(f"Fuel left: {ufo.fuel}L", True, (255, 255, 255))
         screen.blit(fuel, (300, 20))
