@@ -17,7 +17,6 @@ class Gas:
         self.gas_position_x = position_x
         self.gas_position_y = position_y
         # gas density information 128 as default starting value
-        self.gas_color = 0
         self.gas_level = 0
         self.altitude = 0
         # pygame objects
@@ -27,9 +26,11 @@ class Gas:
         self.gas_rect.move_ip(self.gas_position_x, self.gas_position_y)
 
     def set_color(self, level):
-        if 100 < level < 255:
-            self.gas_surf.fill((level, 127 * level / 255, 0))
-        if level > 256:
+        if 10 < level < 100:
+            self.gas_surf.fill((100 * level / 100, 50 * level / 100, 0))
+        elif 100 < level < 1000:
+            self.gas_surf.fill(((100 * level / 1000) + 100, (50 * level / 1000) + 50, 0))
+        elif level > 1000:
             self.gas_surf.fill((255, 0, 0))
 
     @property
@@ -70,7 +71,7 @@ class Gas:
         return gas level/density
         :return: int
         """
-        return self.gas_color
+        return self.gas_level
 
 
 class GasCloud:
@@ -97,12 +98,28 @@ class GasCloud:
         self.positions[int(position_x / GAS_SIZE), int(position_y / GAS_SIZE)].gas_level += 1000 / GAS_SIZE
         self.positions[int(position_x / GAS_SIZE), int(position_y / GAS_SIZE)].altitude = altitude
 
-    def degrade_gas(self):
+    def degrade_gas(self, position_x, position_y):
         max_level_adjust = 0
+        if position_x + 100 > 900:
+            my_x_max = 900
+        else:
+            my_x_max = int((position_x + 100) / GAS_SIZE)
+        if position_x - 100 < 0:
+            my_x_min = 0
+        else:
+            my_x_min = int((position_x - 100) / GAS_SIZE)
+        if position_y + 100 > 900:
+            my_y_max = 900
+        else:
+            my_y_max = int((position_y + 100) / GAS_SIZE)
+        if position_y - 100 < 0:
+            my_y_min = 0
+        else:
+            my_y_min = int((position_y - 100) / GAS_SIZE)
         degradation = 1.25
-        for x in range(int(SCREEN_WIDTH / GAS_SIZE)):
-            for y in range(int(SCREEN_HEIGHT / GAS_SIZE)):
-                if self.positions[x, y].altitude > 249:
+        for x in range(my_x_min, my_x_max):
+            for y in range(my_y_min, my_y_max):
+                if self.positions[x, y].altitude > 50:
                     self.positions[x, y].gas_level /= degradation
                     self.positions[x, y].altitude /= degradation
                     if self.positions[x, y].gas_level > max_level_adjust:
@@ -160,9 +177,25 @@ class GasCloud:
                 total_volume += self.positions[x, y].gas_level
         return total_volume
 
-    def draw(self, myscreen):
-        for x in range(int(SCREEN_WIDTH / GAS_SIZE)):
-            for y in range(int(SCREEN_HEIGHT / GAS_SIZE)):
+    def draw(self, myscreen, position_x, position_y):
+        if position_x + 100 > 900:
+            my_x_max = 900
+        else:
+            my_x_max = int((position_x + 100) / GAS_SIZE)
+        if position_x - 100 < 0:
+            my_x_min = 0
+        else:
+            my_x_min = int((position_x - 100) / GAS_SIZE)
+        if position_y + 100 > 900:
+            my_y_max = 900
+        else:
+            my_y_max = int((position_y + 100) / GAS_SIZE)
+        if position_y - 100 < 0:
+            my_y_min = 0
+        else:
+            my_y_min = int((position_y - 100) / GAS_SIZE)
+        for x in range(my_x_min, my_x_max):
+            for y in range(my_y_min, my_y_max):
                 if self.positions[x, y].gas_level != 0:
                     self.positions[x, y].set_color(self.positions[x, y].gas_level)
                     myscreen.blit(self.positions[x, y].surf, self.positions[x, y].rect)

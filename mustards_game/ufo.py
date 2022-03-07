@@ -164,8 +164,8 @@ def main():
         screen.blit(text, (20, 20))
 
         # Draw the gas cloud
-        gas.draw(screen)
-        gas.degrade_gas()
+        gas.degrade_gas(ufo.current_pos_x, ufo.current_pos_y)
+        gas.draw(screen, ufo.current_pos_x, ufo.current_pos_y)
         score = score_font.render(f"Lethalcoverage: {gas.get_area_covered()}", True, (255, 255, 255))
         screen.blit(score, (500, 20))
         for item in gas.gas_density:
