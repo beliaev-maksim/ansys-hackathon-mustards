@@ -98,7 +98,7 @@ class GasCloud:
         self.positions[int(position_x / GAS_SIZE), int(position_y / GAS_SIZE)].gas_level += 1000 / GAS_SIZE
         self.positions[int(position_x / GAS_SIZE), int(position_y / GAS_SIZE)].altitude = altitude
 
-    def degrade_gas(self, position_x, position_y):
+    def degrade_gas(self, screen, position_x, position_y):
         max_level_adjust = 0
         if position_x + 100 > 900:
             my_x_max = 900
@@ -139,6 +139,8 @@ class GasCloud:
                         self.positions[x, y - 1].altitude = self.positions[x, y].altitude
                         self.positions[x, y + 1].altitude = self.positions[x, y].altitude
 
+                    self.draw(screen, x, y)
+
                 if self.positions[x, y].gas_level < 100:
                     self.gas_density[10] += GAS_SIZE
                 elif self.positions[x, y].gas_level < 1000:
@@ -178,24 +180,11 @@ class GasCloud:
         return total_volume
 
     def draw(self, myscreen, position_x, position_y):
-        if position_x + 100 > 900:
-            my_x_max = 900
-        else:
-            my_x_max = int((position_x + 100) / GAS_SIZE)
-        if position_x - 100 < 0:
-            my_x_min = 0
-        else:
-            my_x_min = int((position_x - 100) / GAS_SIZE)
-        if position_y + 100 > 900:
-            my_y_max = 900
-        else:
-            my_y_max = int((position_y + 100) / GAS_SIZE)
-        if position_y - 100 < 0:
-            my_y_min = 0
-        else:
-            my_y_min = int((position_y - 100) / GAS_SIZE)
-        for x in range(my_x_min, my_x_max):
-            for y in range(my_y_min, my_y_max):
-                if self.positions[x, y].gas_level != 0:
-                    self.positions[x, y].set_color(self.positions[x, y].gas_level)
-                    myscreen.blit(self.positions[x, y].surf, self.positions[x, y].rect)
+        x = [0, 1, -1, 0, 0]
+        y = [0, 0, 0, 1, -1]
+        for idx in range(5):
+            X = position_x + x[idx]
+            Y = position_y + y[idx]
+            if self.positions[X, Y].gas_level != 0:
+                self.positions[X, Y].set_color(self.positions[X, Y].gas_level)
+                myscreen.blit(self.positions[X, Y].surf, self.positions[X, Y].rect)

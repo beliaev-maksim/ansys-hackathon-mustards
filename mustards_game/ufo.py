@@ -16,6 +16,7 @@ from mustards_game.score_log import ScoreLog
 # Define constants for the screen width and height
 SCREEN_WIDTH = 900
 SCREEN_HEIGHT = 900
+INFO_WIDTH = 500
 
 MAX_ALTITUDE = 1000
 
@@ -69,7 +70,7 @@ class UFO(pygame.sprite.Sprite):
             return True
         return False
 
-    def rotate(self, pressed_keys):
+    def change_direction(self, pressed_keys):
         """Rotate airplain based on LEFT or RIGHT key pressed.
 
         :param pressed_keys:
@@ -108,30 +109,88 @@ class UFO(pygame.sprite.Sprite):
                     self.altitude += 1
                     self.consume_fuel()
 
+    def check_collide(self, obj_rect):
+        x, y = self.rect.center
+        X, Y = obj_rect.center
+        distance = math.hypot(X - x, Y - y)
+
+        if distance < 1.5 * (25 + obj_rect.height):
+            return True
+        else:
+            return False
+
+
+class GameDisplay:
+    def __init__(self):
+
+        self.screen = pygame.display.set_mode((SCREEN_WIDTH + INFO_WIDTH, SCREEN_HEIGHT))
+        self.screen.fill((0, 0, 0))
+
+        self.game_background = pygame.Surface((SCREEN_WIDTH, SCREEN_HEIGHT))
+        self.game_background.fill((0, 0, 0))
+        self.game_background_rect = self.game_background.get_rect()
+
+        self.info_board = pygame.Surface((INFO_WIDTH, SCREEN_HEIGHT))
+        self.info_board.fill((0, 0, 125))
+        self.info_board_rect = self.info_board.get_rect()
+
+    def game_display_update(self):
+        self.screen.blit(self.game_background, self.game_background_rect)
+
+    def game_display(self, obj, pos):
+        self.screen.blit(obj, pos)
+
+    def info_display_update(self):
+        self.screen.blit(self.info_board, (SCREEN_WIDTH, 0))
+
+    def info_display(self, obj, pos):
+        self.screen.blit(obj, pos)
+
+    def update(self):
+        pygame.display.flip()
+
 
 def main():
     pygame.init()
-    screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
+
+    # game & info initiate
+    display = GameDisplay()
+
+    # font texts
     altitude_font = pygame.font.SysFont("monospace", 16)
     fuel_font = pygame.font.SysFont("monospace", 16)
-    n_obstacle = 5
-    ufo = UFO()
-    gas = ufo.gas_cloud
-    # Create sprite group of obstacles
-    obstacles = pygame.sprite.Group()
     score_font = pygame.font.SysFont("monospace", 16)
     gas_density_font = pygame.font.SysFont("monospace", 16)
+
+    # game objects
+    ufo = UFO()
+    gas = ufo.gas_cloud
+    obstacles = pygame.sprite.Group()
+    n_obstacle = 5
     for i in range(0, n_obstacle):
         new_obstacle = Obstacle()
         obstacles.add(new_obstacle)
 
+    ################################
+    # Draw static map / obstacles background on screen
+    for obstacle in obstacles:
+        display.game_display(obstacle.surf, obstacle.rect)
+        height = altitude_font.render(f"{obstacle.height}m", True, (255, 255, 255))
+        display.game_display(height, (obstacle.pos[0], obstacle.pos[1]))
+
+    # game run
     running = True
     while running:
-        # Ensure program maintains a rate of 30 frames per second
-        clock = pygame.time.Clock()
+        clock = pygame.time.Clock()  # Ensure program maintains a rate of 30 frames per second
         clock.tick(180)
+        # display.game_display_update()  # update the game section
 
+        ################################
+        # Draw moving objects on screen
         ufo.fly()
+        pressed_keys = pygame.key.get_pressed()
+        ufo.change_altitude(pressed_keys)
+        ufo.change_direction(pressed_keys)
 
         if ufo.fuel <= 0:
             # when we are out of fuel, start to decrease altitude
@@ -153,40 +212,18 @@ def main():
             elif event.type == QUIT:
                 running = False
 
-        pressed_keys = pygame.key.get_pressed()
-        ufo.change_altitude(pressed_keys)
-        ufo.rotate(pressed_keys)
-
-        # Fill the screen with black
-        screen.fill((0, 0, 0))
-
-        text = altitude_font.render(f"Altitude: {ufo.altitude}m", True, (255, 0, 0))
-        screen.blit(text, (20, 20))
+        # Update obstacle if not collision
+        for obstacle in obstacles:
+            if ufo.check_collide(obstacle.rect):
+                display.game_display(obstacle.surf, obstacle.rect)
+                height = altitude_font.render(f"{obstacle.height}m", True, (255, 255, 255))
+                display.game_display(height, (obstacle.pos[0], obstacle.pos[1]))
 
         # Draw the gas cloud
-        gas.degrade_gas(ufo.current_pos_x, ufo.current_pos_y)
-        gas.draw(screen, ufo.current_pos_x, ufo.current_pos_y)
-        score = score_font.render(f"Lethalcoverage: {gas.get_area_covered()}", True, (255, 255, 255))
-        screen.blit(score, (500, 20))
-        for item in gas.gas_density:
-            gas_density = gas_density_font.render(
-                f"area with density over{item}: {gas.gas_density[item]}",
-                True,
-                (255, 255 / math.log10(item), 255 / math.log10(item)),
-            )
-            screen.blit(gas_density, (500, 15 * math.log10(item) + 30))
-
-        fuel = fuel_font.render(f"Fuel left: {ufo.fuel}L", True, (255, 255, 255))
-        screen.blit(fuel, (300, 20))
-
-        # Draw obstacle on screen
-        for obstacle in obstacles:
-            screen.blit(obstacle.surf, obstacle.rect)
-            height = altitude_font.render(f"{obstacle.height}m", True, (255, 255, 255))
-            screen.blit(height, (obstacle.pos[0], obstacle.pos[1]))
+        gas.degrade_gas(display.screen, ufo.current_pos_x, ufo.current_pos_y)
 
         # Draw UFO on the screen at the last step. It must overlay other objects
-        screen.blit(ufo.surf, ufo.rect)
+        display.game_display(ufo.surf, ufo.rect)
 
         # Check collision with obstacles
         obstacle_collided = pygame.sprite.spritecollide(ufo, obstacles, False)
@@ -194,8 +231,29 @@ def main():
             running = False
             print("Collision with an obstacle! GAME OVER!")
 
-        # Update the display
-        pygame.display.flip()
+        ################################
+        # Display information
+        display.info_display_update()  # update the info board section
+
+        text = altitude_font.render(f"Altitude: {ufo.altitude}m", True, (255, 0, 0))
+        display.info_display(text, (SCREEN_WIDTH, 20))
+
+        fuel = fuel_font.render(f"Fuel left: {ufo.fuel}L", True, (255, 255, 255))
+        display.info_display(fuel, (SCREEN_WIDTH, 80))
+
+        score = score_font.render(f"Lethalcoverage: {gas.get_area_covered()}", True, (255, 255, 255))
+        display.info_display(score, (SCREEN_WIDTH, 140))
+        for item in gas.gas_density:
+            gas_density = gas_density_font.render(
+                f"Area with density over 10^{int(math.log10(item))}: {gas.gas_density[item]}",
+                True,
+                (255, 255 / math.log10(item), 255 / math.log10(item)),
+            )
+            display.info_display(gas_density, (SCREEN_WIDTH, 15 * math.log10(item) + 200))
+
+        ################################
+        # Game & info display update
+        display.update()  # Update the display
 
     SL = ScoreLog()
     history_score = SL.read_score()
@@ -208,7 +266,7 @@ def main():
     else:
         print("you have new record")
     SL.write_score(gas.get_area_covered())
-    SL.display(screen)
+    SL.display(display.screen)
 
 
 if __name__ == "__main__":
