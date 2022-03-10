@@ -27,11 +27,11 @@ class Gas:
 
     def set_color(self, level):
         if 10 < level < 100:
-            self.gas_surf.fill((100 * level / 100, 50 * level / 100, 0))
+            self.gas_surf.fill((50 * level / 100, 50 * level / 100, 0))
         elif 100 < level < 1000:
-            self.gas_surf.fill(((100 * level / 1000) + 100, (50 * level / 1000) + 50, 0))
+            self.gas_surf.fill((((50 * level / 1000) + 50), ((50 * level / 1000) + 50), 0))
         elif level > 1000:
-            self.gas_surf.fill((255, 0, 0))
+            self.gas_surf.fill((200, 200, 0))
 
     @property
     def position_x(self):
