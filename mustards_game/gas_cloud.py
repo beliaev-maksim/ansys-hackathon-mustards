@@ -101,7 +101,7 @@ class GasCloud:
     def degrade_gas(self, screen, position_x, position_y):
         max_level_adjust = 0
         if position_x + 100 > 900:
-            my_x_max = 900
+            my_x_max = int(900 / GAS_SIZE) - 1
         else:
             my_x_max = int((position_x + 100) / GAS_SIZE)
         if position_x - 100 < 0:
@@ -109,7 +109,7 @@ class GasCloud:
         else:
             my_x_min = int((position_x - 100) / GAS_SIZE)
         if position_y + 100 > 900:
-            my_y_max = 900
+            my_y_max = int(900 / GAS_SIZE) - 1
         else:
             my_y_max = int((position_y + 100) / GAS_SIZE)
         if position_y - 100 < 0:
@@ -164,7 +164,7 @@ class GasCloud:
         coverage = 0
         for x in range(int(SCREEN_WIDTH / GAS_SIZE)):
             for y in range(int(SCREEN_HEIGHT / GAS_SIZE)):
-                if self.positions[x, y].gas_level > 256:
+                if self.positions[x, y].gas_level > 100:
                     coverage += GAS_SIZE
         return coverage
 
