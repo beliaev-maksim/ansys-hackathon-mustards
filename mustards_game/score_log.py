@@ -65,11 +65,11 @@ class ScoreLog:
         while running:
             screen.fill((0, 0, 0))
             score_history_font = pygame.font.SysFont("monospace", 16)
-            text1 = score_history_font.render(f"First: {self.new_history[0]}m", True, (255, 0, 0))
+            text1 = score_history_font.render(f"First: {self.new_history[0]} m²", True, (255, 0, 0))
             screen.blit(text1, (350, 300))
-            text2 = score_history_font.render(f"Second: {self.new_history[1]}m", True, (255, 0, 0))
+            text2 = score_history_font.render(f"Second: {self.new_history[1]} m²", True, (255, 0, 0))
             screen.blit(text2, (350, 360))
-            text3 = score_history_font.render(f"Third: {self.new_history[2]}m", True, (255, 0, 0))
+            text3 = score_history_font.render(f"Third: {self.new_history[2]} m²", True, (255, 0, 0))
             screen.blit(text3, (350, 420))
             pygame.display.flip()
 

@@ -28,9 +28,9 @@ class Gas:
     def set_color(self, level):
         if 10 < level < 100:
             self.gas_surf.fill((50 * level / 100, 50 * level / 100, 0))
-        elif 100 < level < 1000:
-            self.gas_surf.fill((((50 * level / 1000) + 50), ((50 * level / 1000) + 50), 0))
-        elif level > 1000:
+        elif 100 < level < 500:
+            self.gas_surf.fill((((50 * level / 500) + 50), ((50 * level / 500) + 50), 0))
+        elif level > 500:
             self.gas_surf.fill((200, 200, 0))
 
     @property
@@ -84,8 +84,9 @@ class GasCloud:
         for x in range(int(SCREEN_WIDTH / GAS_SIZE)):
             for y in range(int(SCREEN_HEIGHT / GAS_SIZE)):
                 self.positions[x, y] = Gas(x * GAS_SIZE, y * GAS_SIZE)
-        self.max_level = 0
-        self.gas_density = {10: 0, 100: 0, 1000: 0, 10000: 0, 100000: 0}
+        self.critical = 500
+        self.coverage = 0
+        self.coverage_map = np.zeros((int(SCREEN_WIDTH / GAS_SIZE), int(SCREEN_HEIGHT / GAS_SIZE)), bool)
 
     def update(self, position_x, position_y, altitude):
         """
@@ -99,7 +100,6 @@ class GasCloud:
         self.positions[int(position_x / GAS_SIZE), int(position_y / GAS_SIZE)].altitude = altitude
 
     def degrade_gas(self, screen, position_x, position_y):
-        max_level_adjust = 0
         if position_x + 100 > 900:
             my_x_max = int(900 / GAS_SIZE) - 1
         else:
@@ -122,8 +122,6 @@ class GasCloud:
                 if self.positions[x, y].altitude > 50:
                     self.positions[x, y].gas_level /= degradation
                     self.positions[x, y].altitude /= degradation
-                    if self.positions[x, y].gas_level > max_level_adjust:
-                        max_level_adjust = self.positions[x, y].gas_level
                     if (
                         x != int(SCREEN_WIDTH / GAS_SIZE) - 1
                         and y != int(SCREEN_HEIGHT / GAS_SIZE) - 1
@@ -141,32 +139,13 @@ class GasCloud:
 
                     self.draw(screen, x, y)
 
-                if self.positions[x, y].gas_level < 100:
-                    self.gas_density[10] += GAS_SIZE
-                elif self.positions[x, y].gas_level < 1000:
-                    self.gas_density[100] += GAS_SIZE
-                elif self.positions[x, y].gas_level < 10000:
-                    self.gas_density[1000] += GAS_SIZE
-                elif self.positions[x, y].gas_level < 100000:
-                    self.gas_density[10000] += GAS_SIZE
-                else:
-                    self.gas_density[100000] += GAS_SIZE
-        self.max_level = max_level_adjust
-
-    def clean_gas_density_data(self):
-        self.gas_density = {10: 0, 100: 0, 1000: 0, 10000: 0, 100000: 0}
-
     def get_area_covered(self):
         """
         This function return area covered by GasCloud
         :return: int
         """
-        coverage = 0
-        for x in range(int(SCREEN_WIDTH / GAS_SIZE)):
-            for y in range(int(SCREEN_HEIGHT / GAS_SIZE)):
-                if self.positions[x, y].gas_level > 100:
-                    coverage += GAS_SIZE
-        return coverage
+
+        return self.coverage
 
     def get_cloud_volume(self):
         """
@@ -188,3 +167,10 @@ class GasCloud:
             if self.positions[X, Y].gas_level != 0:
                 self.positions[X, Y].set_color(self.positions[X, Y].gas_level)
                 myscreen.blit(self.positions[X, Y].surf, self.positions[X, Y].rect)
+                if self.positions[X, Y].gas_level > self.critical and not self.coverage_map[X, Y]:
+                    print(self.positions[X, Y].gas_level)
+                    self.coverage += GAS_SIZE * GAS_SIZE
+                    self.coverage_map[X, Y] = True
+                elif self.positions[X, Y].gas_level < self.critical and self.coverage_map[X, Y]:
+                    self.coverage -= GAS_SIZE * GAS_SIZE
+                    self.coverage_map[X, Y] = False

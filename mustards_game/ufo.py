@@ -160,7 +160,6 @@ def main():
     altitude_font = pygame.font.SysFont("monospace", 16)
     fuel_font = pygame.font.SysFont("monospace", 16)
     score_font = pygame.font.SysFont("monospace", 16)
-    gas_density_font = pygame.font.SysFont("monospace", 16)
 
     # game objects
     ufo = UFO()
@@ -177,7 +176,7 @@ def main():
         display.game_display(obstacle.surf, obstacle.rect)
         height = altitude_font.render(f"{obstacle.height}m", True, (255, 255, 255))
         display.game_display(height, (obstacle.pos[0], obstacle.pos[1]))
-
+    run_time = 0
     # game run
     running = True
     while running:
@@ -230,30 +229,24 @@ def main():
         if obstacle_collided and obstacle_collided[0].height >= ufo.altitude:
             running = False
             print("Collision with an obstacle! GAME OVER!")
+        if run_time % 20 == 0:
+            ################################
+            # Display information
+            display.info_display_update()  # update the info board section
 
-        ################################
-        # Display information
-        display.info_display_update()  # update the info board section
+            text = altitude_font.render(f"Altitude: {ufo.altitude} m", True, (255, 0, 0))
+            display.info_display(text, (SCREEN_WIDTH, 20))
 
-        text = altitude_font.render(f"Altitude: {ufo.altitude}m", True, (255, 0, 0))
-        display.info_display(text, (SCREEN_WIDTH, 20))
+            fuel = fuel_font.render(f"Fuel left: {ufo.fuel}L", True, (255, 255, 255))
+            display.info_display(fuel, (SCREEN_WIDTH, 80))
 
-        fuel = fuel_font.render(f"Fuel left: {ufo.fuel}L", True, (255, 255, 255))
-        display.info_display(fuel, (SCREEN_WIDTH, 80))
-
-        score = score_font.render(f"Lethalcoverage: {gas.get_area_covered()}", True, (255, 255, 255))
-        display.info_display(score, (SCREEN_WIDTH, 140))
-        for item in gas.gas_density:
-            gas_density = gas_density_font.render(
-                f"Area with density over 10^{int(math.log10(item))}: {gas.gas_density[item]}",
-                True,
-                (255, 255 / math.log10(item), 255 / math.log10(item)),
-            )
-            display.info_display(gas_density, (SCREEN_WIDTH, 15 * math.log10(item) + 200))
+            score = score_font.render(f"Lethalcoverage: {gas.get_area_covered()} m²", True, (255, 255, 255))
+            display.info_display(score, (SCREEN_WIDTH, 140))
 
         ################################
         # Game & info display update
         display.update()  # Update the display
+        run_time += 1
 
     SL = ScoreLog()
     history_score = SL.read_score()
