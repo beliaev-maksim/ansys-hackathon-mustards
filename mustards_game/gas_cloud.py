@@ -28,9 +28,9 @@ class Gas:
     def set_color(self, level):
         if 10 < level < 100:
             self.gas_surf.fill((50 * level / 100, 50 * level / 100, 0))
-        elif 100 < level < 500:
-            self.gas_surf.fill((((50 * level / 500) + 50), ((50 * level / 500) + 50), 0))
-        elif level > 500:
+        elif 100 < level < 100 * GAS_SIZE:
+            self.gas_surf.fill((((50 * level / (100 * GAS_SIZE)) + 50), ((50 * level / (100 * GAS_SIZE)) + 50), 0))
+        elif level > 100 * GAS_SIZE:
             self.gas_surf.fill((200, 200, 0))
 
     @property
@@ -84,7 +84,7 @@ class GasCloud:
         for x in range(int(SCREEN_WIDTH / GAS_SIZE)):
             for y in range(int(SCREEN_HEIGHT / GAS_SIZE)):
                 self.positions[x, y] = Gas(x * GAS_SIZE, y * GAS_SIZE)
-        self.critical = 500
+        self.critical = 100 * GAS_SIZE
         self.coverage = 0
         self.coverage_map = np.zeros((int(SCREEN_WIDTH / GAS_SIZE), int(SCREEN_HEIGHT / GAS_SIZE)), bool)
 
@@ -97,7 +97,7 @@ class GasCloud:
         :return: None
         """
         self.positions[int(position_x / GAS_SIZE), int(position_y / GAS_SIZE)].gas_level += 1000 / GAS_SIZE
-        self.positions[int(position_x / GAS_SIZE), int(position_y / GAS_SIZE)].altitude = altitude
+        self.positions[int(position_x / GAS_SIZE), int(position_y / GAS_SIZE)].altitude += altitude
 
     def degrade_gas(self, screen, position_x, position_y):
         if position_x + 100 > 900:
@@ -136,7 +136,6 @@ class GasCloud:
                         self.positions[x + 1, y].altitude = self.positions[x, y].altitude
                         self.positions[x, y - 1].altitude = self.positions[x, y].altitude
                         self.positions[x, y + 1].altitude = self.positions[x, y].altitude
-
                     self.draw(screen, x, y)
 
     def get_area_covered(self):
