@@ -7,6 +7,7 @@ from pygame.locals import K_LEFT
 from pygame.locals import K_RIGHT
 from pygame.locals import K_UP
 from pygame.locals import KEYDOWN
+from pygame.locals import MOUSEBUTTONDOWN
 from pygame.locals import QUIT
 
 from mustards_game.gas_cloud import GasCloud
@@ -150,8 +151,8 @@ class GameDisplay:
         pygame.display.flip()
 
 
-def main():
-    pygame.init()
+def main_game():
+    # pygame.init()
 
     # game & info initiate
     display = GameDisplay()
@@ -262,6 +263,53 @@ def main():
     SL.display(display.screen)
 
 
+def main_menu():
+    pygame.init()
+    running = True
+    while running:
+        clock = pygame.time.Clock()  # Ensure program maintains a rate of 30 frames per second
+        clock.tick(180)
+
+        screen = pygame.display.set_mode((SCREEN_WIDTH + INFO_WIDTH, SCREEN_HEIGHT))
+        screen.fill((0, 0, 0))
+
+        re_start_button = pygame.Rect((SCREEN_WIDTH + INFO_WIDTH) // 2 - 100, SCREEN_HEIGHT // 2 - 100, 200, 50)
+        end_button = pygame.Rect((SCREEN_WIDTH + INFO_WIDTH) // 2 - 100, SCREEN_HEIGHT // 2, 200, 50)
+        pygame.draw.rect(screen, (255, 0, 0), re_start_button)
+        pygame.draw.rect(screen, (255, 0, 0), end_button)
+        menu_font = pygame.font.SysFont("monospace", 16)
+        start_info = menu_font.render("Start the game", True, (255, 255, 255))
+        end_info = menu_font.render("End the game", True, (255, 255, 255))
+        screen.blit(start_info, ((SCREEN_WIDTH + INFO_WIDTH) // 2 - 75, SCREEN_HEIGHT // 2 - 88))
+        screen.blit(end_info, ((SCREEN_WIDTH + INFO_WIDTH) // 2 - 75, SCREEN_HEIGHT // 2 + 12))
+
+        click_action = False
+        mouse_x, mouse_y = pygame.mouse.get_pos()
+        # for loop through the event queue
+        for event in pygame.event.get():
+            if event.type == KEYDOWN:
+                # If the Esc key is pressed, then exit the main loop
+                if event.key == K_ESCAPE:
+                    running = False
+
+            # Check for QUIT event. If QUIT, then set running to false.
+            elif event.type == QUIT:
+                running = False
+
+            # Check for click the buttons
+            elif event.type == MOUSEBUTTONDOWN:
+                click_action = True
+
+        if click_action and re_start_button.collidepoint((mouse_x, mouse_y)):
+            # mouse clicks the start session button
+            main_game()
+        elif click_action and end_button.collidepoint((mouse_x, mouse_y)):
+            # mouse clicks the end session button
+            running = False
+
+        pygame.display.flip()
+
+
 if __name__ == "__main__":
 
-    main()
+    main_menu()

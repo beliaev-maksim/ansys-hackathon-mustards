@@ -3,6 +3,7 @@ import os
 import pygame
 from pygame.locals import K_ESCAPE
 from pygame.locals import KEYDOWN
+from pygame.locals import MOUSEBUTTONDOWN
 from pygame.locals import QUIT
 
 SCREEN_WIDTH = 900
@@ -81,4 +82,8 @@ class ScoreLog:
 
                 # Check for QUIT event. If QUIT, then set running to false.
                 elif event.type == QUIT:
+                    running = False
+
+                # Check for QUIT event. If QUIT, then set running to false.
+                elif event.type == MOUSEBUTTONDOWN:
                     running = False
