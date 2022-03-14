@@ -21,12 +21,13 @@ class Gas:
         self.altitude = 0
         # pygame objects
         self.gas_surf = pygame.Surface((GAS_SIZE, GAS_SIZE))
+        self.gas_surf.set_colorkey((0, 0, 0))
 
         self.gas_rect = self.gas_surf.get_rect()
         self.gas_rect.move_ip(self.gas_position_x, self.gas_position_y)
 
     def set_color(self, level):
-        if 10 < level < 100:
+        if 30 < level < 100:
             self.gas_surf.fill((50 * level / 100, 50 * level / 100, 0))
         elif 100 < level < 100 * GAS_SIZE:
             self.gas_surf.fill((((50 * level / (100 * GAS_SIZE)) + 50), ((50 * level / (100 * GAS_SIZE)) + 50), 0))
