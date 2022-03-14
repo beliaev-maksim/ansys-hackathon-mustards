@@ -8,6 +8,7 @@ from pygame.locals import QUIT
 
 SCREEN_WIDTH = 900
 SCREEN_HEIGHT = 900
+INFO_WIDTH = 500
 
 
 class ScoreLog:
@@ -63,27 +64,50 @@ class ScoreLog:
 
     def display(self, screen):
         running = True
+        output = 1  # 1 for continue the game, 0 for exit for the main menu, -1 for exit the game completely
+
+        screen.fill((0, 0, 0))
+        score_history_font = pygame.font.SysFont("monospace", 16)
+        text1 = score_history_font.render(f"First: {self.new_history[0]} m²", True, (255, 0, 0))
+        screen.blit(text1, (350, 300))
+        text2 = score_history_font.render(f"Second: {self.new_history[1]} m²", True, (255, 0, 0))
+        screen.blit(text2, (350, 360))
+        text3 = score_history_font.render(f"Third: {self.new_history[2]} m²", True, (255, 0, 0))
+        screen.blit(text3, (350, 420))
+
+        re_start_button = pygame.Rect(270, 500, 400, 50)
+        pygame.draw.rect(screen, (255, 0, 0), re_start_button)
+        menu_font = pygame.font.SysFont("monospace", 16)
+        start_info = menu_font.render("Do you want to restart the game?", True, (255, 255, 255))
+        screen.blit(start_info, (300, 510))
+
+        pygame.display.flip()
+
         while running:
-            screen.fill((0, 0, 0))
-            score_history_font = pygame.font.SysFont("monospace", 16)
-            text1 = score_history_font.render(f"First: {self.new_history[0]} m²", True, (255, 0, 0))
-            screen.blit(text1, (350, 300))
-            text2 = score_history_font.render(f"Second: {self.new_history[1]} m²", True, (255, 0, 0))
-            screen.blit(text2, (350, 360))
-            text3 = score_history_font.render(f"Third: {self.new_history[2]} m²", True, (255, 0, 0))
-            screen.blit(text3, (350, 420))
-            pygame.display.flip()
+            click_action = False
+            mouse_x, mouse_y = pygame.mouse.get_pos()
 
             for event in pygame.event.get():
                 if event.type == KEYDOWN:
                     # If the Esc key is pressed, then exit the main loop
                     if event.key == K_ESCAPE:
+                        output = -1
                         running = False
 
                 # Check for QUIT event. If QUIT, then set running to false.
                 elif event.type == QUIT:
+                    output = -1
                     running = False
 
                 # Check for QUIT event. If QUIT, then set running to false.
                 elif event.type == MOUSEBUTTONDOWN:
+                    click_action = True
+
+            if click_action:
+                if re_start_button.collidepoint((mouse_x, mouse_y)):
+                    output = 1
                     running = False
+                else:
+                    output = 0
+                    running = False
+        return output
