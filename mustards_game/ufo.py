@@ -26,8 +26,7 @@ class UFO(pygame.sprite.Sprite):
     def __init__(self):
         super().__init__()
         self.size = 25
-        self.surf = pygame.Surface((self.size, self.size))
-        self.surf.fill((255, 255, 255))
+        self.surf = pygame.image.load("ufo_25.png").convert_alpha()
         self.rect = self.surf.get_rect()
         self.direction = (0, 1)
         self.altitude = 500
