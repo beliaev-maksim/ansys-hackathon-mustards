@@ -128,7 +128,7 @@ def main():
     while running:
         # Ensure program maintains a rate of 30 frames per second
         clock = pygame.time.Clock()
-        clock.tick(1801)
+        clock.tick(180)
 
         ufo.fly()
 
