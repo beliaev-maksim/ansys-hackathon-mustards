@@ -167,7 +167,6 @@ class GasCloud:
                 self.positions[X, Y].set_color(self.positions[X, Y].gas_level)
                 myscreen.blit(self.positions[X, Y].surf, self.positions[X, Y].rect)
                 if self.positions[X, Y].gas_level > self.critical and not self.coverage_map[X, Y]:
-                    print(self.positions[X, Y].gas_level)
                     self.coverage += GAS_SIZE * GAS_SIZE
                     self.coverage_map[X, Y] = True
                 elif self.positions[X, Y].gas_level < self.critical and self.coverage_map[X, Y]:
