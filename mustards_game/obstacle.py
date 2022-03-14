@@ -21,8 +21,9 @@ class Obstacle(pygame.sprite.Sprite):
         self.rect.move_ip(self.pos[0], self.pos[1])
 
     def randomize_pos(self):
-        x = random.randint(0, SCREEN_WIDTH - 100)
-        y = random.randint(0, SCREEN_HEIGHT - 100)
+        x = random.randint(100, SCREEN_WIDTH - 100)
+        y = random.randint(100, SCREEN_HEIGHT - 100)
+
         self.pos = (x, y)
 
     def randomize_height(self):
