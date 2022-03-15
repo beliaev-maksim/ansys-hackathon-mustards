@@ -301,7 +301,7 @@ def main_menu():
             elif int(history_score[0]) > score > int(history_score[2]):
                 print("Nice, you are in the top score list!")
             else:
-                print("you have new record")
+                print("You have a new record!")
             SL.write_score(score)
             response = SL.display(screen)
             print("response: ", response)
