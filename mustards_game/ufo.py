@@ -131,9 +131,6 @@ class GameDisplay:
 
         self.game_background = image
         self.screen.blit(image, (0, 0))
-        # self.game_background = pygame.Surface((SCREEN_WIDTH, SCREEN_HEIGHT))
-        # self.game_background.fill((0, 0, 0))
-        # self.game_background_rect = self.game_background.get_rect()
 
         self.info_board = pygame.Surface((INFO_WIDTH, SCREEN_HEIGHT))
         self.info_board.fill((0, 0, 125))
@@ -196,9 +193,6 @@ def main_game():
     while running:
         clock = pygame.time.Clock()  # Ensure program maintains a rate of 30 frames per second
         clock.tick(180)
-
-        # if run_time % 20 == 0:
-        #    display.game_display_update()  # update the game section
 
         ################################
         # Draw moving objects on screen
