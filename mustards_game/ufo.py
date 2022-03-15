@@ -299,7 +299,7 @@ def main_menu():
             elif score < int(history_score[2]):
                 print("please continue")
             elif int(history_score[0]) > score > int(history_score[2]):
-                print("nice, you are in list")
+                print("Nice, you are in the top score list!")
             else:
                 print("you have new record")
             SL.write_score(score)
