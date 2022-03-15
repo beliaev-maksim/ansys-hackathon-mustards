@@ -1,5 +1,6 @@
 import math
 
+import numpy as np
 import pygame
 from pygame.locals import K_DOWN
 from pygame.locals import K_ESCAPE
@@ -10,6 +11,8 @@ from pygame.locals import KEYDOWN
 from pygame.locals import MOUSEBUTTONDOWN
 from pygame.locals import QUIT
 
+from mustards_game.background import Background
+from mustards_game.background import Tileset
 from mustards_game.gas_cloud import GasCloud
 from mustards_game.obstacle import Obstacle
 from mustards_game.score_log import ScoreLog
@@ -121,21 +124,21 @@ class UFO(pygame.sprite.Sprite):
 
 
 class GameDisplay:
-    def __init__(self):
+    def __init__(self, image):
 
         self.screen = pygame.display.set_mode((SCREEN_WIDTH + INFO_WIDTH, SCREEN_HEIGHT))
         self.screen.fill((0, 0, 0))
 
-        self.game_background = pygame.Surface((SCREEN_WIDTH, SCREEN_HEIGHT))
-        self.game_background.fill((0, 0, 0))
-        self.game_background_rect = self.game_background.get_rect()
+        self.game_background = image
+        self.screen.blit(image, (0, 0))
 
         self.info_board = pygame.Surface((INFO_WIDTH, SCREEN_HEIGHT))
         self.info_board.fill((0, 0, 125))
         self.info_board_rect = self.info_board.get_rect()
 
     def game_display_update(self):
-        self.screen.blit(self.game_background, self.game_background_rect)
+        self.screen.fill((0, 0, 0))
+        self.screen.blit(self.game_background, (0, 0))
 
     def game_display(self, obj, pos):
         self.screen.blit(obj, pos)
@@ -153,8 +156,15 @@ class GameDisplay:
 def main_game():
     # pygame.init()
 
+    tileset = Tileset("Grass_01_LQ.png", size=(128, 128))
+
+    m = int(np.floor(SCREEN_WIDTH / tileset.size[0]) + 1)
+    n = int(np.floor(SCREEN_HEIGHT / tileset.size[1]) + 1)
+    background = Background(tileset, size=(m, n))
+    background.render()
+
     # game & info initiate
-    display = GameDisplay()
+    display = GameDisplay(image=background.image)
 
     # font texts
     altitude_font = pygame.font.SysFont("monospace", 16)
@@ -176,13 +186,13 @@ def main_game():
         display.game_display(obstacle.surf, obstacle.rect)
         height = altitude_font.render(f"{obstacle.height}m", True, (255, 255, 255))
         display.game_display(height, (obstacle.pos[0], obstacle.pos[1]))
+
     run_time = 0
     # game run
     running = True
     while running:
         clock = pygame.time.Clock()  # Ensure program maintains a rate of 30 frames per second
         clock.tick(180)
-        # display.game_display_update()  # update the game section
 
         ################################
         # Draw moving objects on screen
@@ -229,6 +239,7 @@ def main_game():
         if obstacle_collided and obstacle_collided[0].height >= ufo.altitude:
             running = False
             print("Collision with an obstacle! GAME OVER!")
+
         if run_time % 20 == 0:
             ################################
             # Display information
