@@ -5,6 +5,8 @@ import pygame
 SCREEN_WIDTH = 900
 SCREEN_HEIGHT = 900
 
+obstacle_imgs = ["sprites/mountain.png", "sprites/win_mountain.png"]
+
 
 class Obstacle(pygame.sprite.Sprite):
     def __init__(self):
@@ -15,9 +17,9 @@ class Obstacle(pygame.sprite.Sprite):
         self.randomize_pos()
         self.randomize_height()
         self.randomize_size()
-        self.surf = pygame.Surface((self.size, self.size))
-        self.surf.fill((255, 0, 0))
+        self.surf = pygame.image.load(obstacle_imgs[random.randint(0, 1)]).convert_alpha()
         self.rect = self.surf.get_rect()
+        self.mask = pygame.mask.from_surface(self.surf)
         self.rect.move_ip(self.pos[0], self.pos[1])
 
     def randomize_pos(self):

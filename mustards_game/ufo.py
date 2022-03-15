@@ -29,8 +29,11 @@ class UFO(pygame.sprite.Sprite):
     def __init__(self):
         super().__init__()
         self.size = 25
-        self.surf = pygame.image.load("ufo_25.png").convert_alpha()
+        self.surf = pygame.image.load("sprites/ufo_25.png").convert_alpha()
         self.rect = self.surf.get_rect()
+
+        # apply mask to make a perfect collision based on pixels
+        self.mask = pygame.mask.from_surface(self.surf)
         self.direction = (0, 1)
         self.altitude = 500
 
@@ -79,7 +82,6 @@ class UFO(pygame.sprite.Sprite):
         :param pressed_keys:
         :return:
         """
-        # https://stackoverflow.com/questions/4183208/how-do-i-rotate-an-image-around-its-center-using-pygame
 
         rot_step = 1  # degrees
         r = 1
@@ -111,16 +113,6 @@ class UFO(pygame.sprite.Sprite):
                 if self.altitude <= MAX_ALTITUDE:
                     self.altitude += 1
                     self.consume_fuel()
-
-    def check_collide(self, obj_rect):
-        x, y = self.rect.center
-        X, Y = obj_rect.center
-        distance = math.hypot(X - x, Y - y)
-
-        if distance < 1.5 * (25 + obj_rect.height):
-            return True
-        else:
-            return False
 
 
 class GameDisplay:
@@ -156,7 +148,7 @@ class GameDisplay:
 def main_game():
     # pygame.init()
 
-    tileset = Tileset("Grass_01_LQ.png", size=(128, 128))
+    tileset = Tileset("sprites/Grass_01_LQ.png", size=(128, 128))
 
     m = int(np.floor(SCREEN_WIDTH / tileset.size[0]) + 1)
     n = int(np.floor(SCREEN_HEIGHT / tileset.size[1]) + 1)
@@ -180,7 +172,6 @@ def main_game():
         new_obstacle = Obstacle()
         obstacles.add(new_obstacle)
 
-    ################################
     # Draw static map / obstacles background on screen
     for obstacle in obstacles:
         display.game_display(obstacle.surf, obstacle.rect)
@@ -194,7 +185,6 @@ def main_game():
         clock = pygame.time.Clock()  # Ensure program maintains a rate of 30 frames per second
         clock.tick(180)
 
-        ################################
         # Draw moving objects on screen
         ufo.fly()
         pressed_keys = pygame.key.get_pressed()
@@ -221,13 +211,6 @@ def main_game():
             elif event.type == QUIT:
                 running = False
 
-        # Update obstacle if not collision
-        for obstacle in obstacles:
-            if ufo.check_collide(obstacle.rect):
-                display.game_display(obstacle.surf, obstacle.rect)
-                height = altitude_font.render(f"{obstacle.height}m", True, (255, 255, 255))
-                display.game_display(height, (obstacle.pos[0], obstacle.pos[1]))
-
         # Draw the gas cloud
         gas.degrade_gas(display.screen, ufo.current_pos_x, ufo.current_pos_y)
 
@@ -235,13 +218,12 @@ def main_game():
         display.game_display(ufo.surf, ufo.rect)
 
         # Check collision with obstacles
-        obstacle_collided = pygame.sprite.spritecollide(ufo, obstacles, False)
+        obstacle_collided = pygame.sprite.spritecollide(ufo, obstacles, False, pygame.sprite.collide_mask)
         if obstacle_collided and obstacle_collided[0].height >= ufo.altitude:
             running = False
             print("Collision with an obstacle! GAME OVER!")
 
         if run_time % 20 == 0:
-            ################################
             # Display information
             display.info_display_update()  # update the info board section
 
@@ -254,9 +236,13 @@ def main_game():
             score = score_font.render(f"Lethalcoverage: {gas.get_area_covered()} m²", True, (255, 255, 255))
             display.info_display(score, (SCREEN_WIDTH, 140))
 
-        ################################
+            # redraw obstacle heights to be always on top of the gas
+            for obstacle in obstacles:
+                height = altitude_font.render(f"{obstacle.height}m", True, (255, 255, 255))
+                display.game_display(height, (obstacle.pos[0], obstacle.pos[1]))
+
         # Game & info display update
-        display.update()  # Update the display
+        display.update()
         run_time += 1
 
     SL = ScoreLog()
