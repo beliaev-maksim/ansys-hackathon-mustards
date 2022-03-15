@@ -97,7 +97,7 @@ class GasCloud:
         :param position_y: int
         :return: None
         """
-        self.positions[int(position_x / GAS_SIZE), int(position_y / GAS_SIZE)].gas_level += 1000 / GAS_SIZE
+        self.positions[int(position_x / GAS_SIZE), int(position_y / GAS_SIZE)].gas_level += 2500 / GAS_SIZE
         self.positions[int(position_x / GAS_SIZE), int(position_y / GAS_SIZE)].altitude += altitude
 
     def degrade_gas(self, screen, position_x, position_y):
@@ -120,7 +120,7 @@ class GasCloud:
         degradation = 1.25
         for x in range(my_x_min, my_x_max):
             for y in range(my_y_min, my_y_max):
-                if self.positions[x, y].altitude > 50:
+                if self.positions[x, y].altitude > 25:
                     self.positions[x, y].gas_level /= degradation
                     self.positions[x, y].altitude /= degradation
                     if (
