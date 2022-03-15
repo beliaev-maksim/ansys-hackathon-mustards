@@ -245,18 +245,7 @@ def main_game():
         display.update()
         run_time += 1
 
-    SL = ScoreLog()
-    history_score = SL.read_score()
-    if not history_score:
-        print("you have done great")
-    elif gas.get_area_covered() < int(history_score[2]):
-        print("please continue")
-    elif int(history_score[0]) > gas.get_area_covered() > int(history_score[2]):
-        print("nice, you are in list")
-    else:
-        print("you have new record")
-    SL.write_score(gas.get_area_covered())
-    SL.display(display.screen)
+    return gas.get_area_covered(), display.screen
 
 
 def main_menu():
@@ -296,10 +285,30 @@ def main_menu():
             elif event.type == MOUSEBUTTONDOWN:
                 click_action = True
 
-        if click_action and re_start_button.collidepoint((mouse_x, mouse_y)):
+        response = None
+        while (click_action and re_start_button.collidepoint((mouse_x, mouse_y))) or response == 1:
             # mouse clicks the start session button
-            main_game()
-        elif click_action and end_button.collidepoint((mouse_x, mouse_y)):
+            score, screen = main_game()
+            SL = ScoreLog()
+            history_score = SL.read_score()
+            if not history_score:
+                print("You have done great!")
+            elif score < int(history_score[2]):
+                print("Your result is not in the top 3 score. Try again!")
+            elif int(history_score[0]) > score > int(history_score[2]):
+                print("Nice, you are in the top score list!")
+            else:
+                print("You have a new record!")
+            SL.write_score(score)
+            response = SL.display(screen)
+            print("response: ", response)
+            if response == -1:
+                click_action = False
+                running = False
+            elif response == 0:
+                click_action = False
+
+        if click_action and end_button.collidepoint((mouse_x, mouse_y)):
             # mouse clicks the end session button
             running = False
 
