@@ -19,6 +19,7 @@ class Obstacle(pygame.sprite.Sprite):
         self.randomize_size()
         self.surf = pygame.image.load(obstacle_imgs[random.randint(0, 1)]).convert_alpha()
         self.rect = self.surf.get_rect()
+        self.mask = pygame.mask.from_surface(self.surf)
         self.rect.move_ip(self.pos[0], self.pos[1])
 
     def randomize_pos(self):
