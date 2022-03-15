@@ -29,7 +29,7 @@ class UFO(pygame.sprite.Sprite):
     def __init__(self):
         super().__init__()
         self.size = 25
-        self.surf = pygame.image.load("ufo_25.png").convert_alpha()
+        self.surf = pygame.image.load("sprites/ufo_25.png").convert_alpha()
         self.rect = self.surf.get_rect()
         self.direction = (0, 1)
         self.altitude = 500
@@ -156,7 +156,7 @@ class GameDisplay:
 def main_game():
     # pygame.init()
 
-    tileset = Tileset("Grass_01_LQ.png", size=(128, 128))
+    tileset = Tileset("sprites/Grass_01_LQ.png", size=(128, 128))
 
     m = int(np.floor(SCREEN_WIDTH / tileset.size[0]) + 1)
     n = int(np.floor(SCREEN_HEIGHT / tileset.size[1]) + 1)
@@ -224,7 +224,7 @@ def main_game():
         # Update obstacle if not collision
         for obstacle in obstacles:
             if ufo.check_collide(obstacle.rect):
-                display.game_display(obstacle.surf, obstacle.rect)
+                # display.game_display(obstacle.surf, obstacle.rect)
                 height = altitude_font.render(f"{obstacle.height}m", True, (255, 255, 255))
                 display.game_display(height, (obstacle.pos[0], obstacle.pos[1]))
 
