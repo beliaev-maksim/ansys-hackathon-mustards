@@ -195,7 +195,7 @@ def main_game():
             # when we are out of fuel, start to decrease altitude
             ufo.altitude -= 5
 
-        if ufo.check_hit_wall() or ufo.altitude <= 0:
+        if ufo.check_hit_wall() or ufo.altitude <= 25:
             # game over
             print("UFO crashed! Game Over!")
             running = False
