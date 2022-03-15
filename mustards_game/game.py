@@ -205,7 +205,6 @@ def main_menu():
                 print("You have a new record!")
             SL.write_score(score)
             response = SL.display(screen)
-            print("response: ", response)
             if response == -1:
                 click_action = False
                 running = False
@@ -217,6 +216,7 @@ def main_menu():
             running = False
 
         pygame.display.flip()
+    pygame.quit()
 
 
 if __name__ == "__main__":
