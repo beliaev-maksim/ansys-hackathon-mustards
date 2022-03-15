@@ -297,7 +297,7 @@ def main_menu():
             if not history_score:
                 print("You have done great!")
             elif score < int(history_score[2]):
-                print("please continue")
+                print("Your result is not in the top 3 score. Try again!")
             elif int(history_score[0]) > score > int(history_score[2]):
                 print("Nice, you are in the top score list!")
             else:
