@@ -295,7 +295,7 @@ def main_menu():
             SL = ScoreLog()
             history_score = SL.read_score()
             if not history_score:
-                print("you have done great")
+                print("You have done great!")
             elif score < int(history_score[2]):
                 print("please continue")
             elif int(history_score[0]) > score > int(history_score[2]):
