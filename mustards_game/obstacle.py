@@ -22,11 +22,15 @@ class Obstacle(pygame.sprite.Sprite):
         self.mask = pygame.mask.from_surface(self.surf)
         self.rect.move_ip(self.pos[0], self.pos[1])
 
-    def randomize_pos(self):
-        x = random.randint(100, SCREEN_WIDTH - 100)
-        y = random.randint(100, SCREEN_HEIGHT - 100)
-
-        self.pos = (x, y)
+    def randomize_pos(self, pos=[(0, 0)]):
+        pos_not_found = True
+        while pos_not_found:
+            x = random.randint(100, SCREEN_WIDTH - 100)
+            y = random.randint(100, SCREEN_HEIGHT - 100)
+            for (pos_x, pos_y) in pos:
+                if not (x in range(pos_x - 100, pos_x + 100) and y in range(pos_y - 100, pos_y + 100)):
+                    self.pos = (x, y)
+        return pos
 
     def randomize_height(self):
         self.height = random.randint(100, 1000)
