@@ -5,7 +5,12 @@ import pygame
 from mustards_game.config import SCREEN_HEIGHT
 from mustards_game.config import SCREEN_WIDTH
 
-obstacle_imgs = ["sprites/mountain.png", "sprites/win_mountain.png", "sprites/blacksmith.png", "sprites/windmill.png"]
+OBSTACLES = [
+    {"path": "sprites/mountain.png", "min": 600, "max": 900, "count": 3},
+    {"path": "sprites/win_mountain.png", "min": 600, "max": 900, "count": 2},
+    {"path": "sprites/blacksmith.png", "min": 10, "max": 200, "count": 2},
+    {"path": "sprites/windmill.png", "min": 10, "max": 200, "count": 2},
+]
 
 
 class Obstacle(pygame.sprite.Sprite):
@@ -14,11 +19,15 @@ class Obstacle(pygame.sprite.Sprite):
         self.pos = (0, 0)
         self.height = 100
         self.size = 25
-        self.surf = pygame.image.load(obstacle_imgs[random.randint(0, len(obstacle_imgs) - 1)]).convert_alpha()
+        for obstacle in OBSTACLES:
+            if obstacle["count"] > 0:
+                obstacle["count"] -= 1
+                break
+
+        self.surf = pygame.image.load(obstacle["path"]).convert_alpha()
         self.rect = self.surf.get_rect()
         self.randomize_pos([(0, 0)])
-        self.randomize_height()
-        self.randomize_size()
+        self.randomize_height(obstacle["min"], obstacle["max"])
         self.rect = self.surf.get_rect()
         self.mask = pygame.mask.from_surface(self.surf)
 
@@ -39,16 +48,5 @@ class Obstacle(pygame.sprite.Sprite):
                 self.rect.move_ip(self.pos[0], self.pos[1])
         return self.pos
 
-    def randomize_height(self):
-        self.height = random.randint(100, 1000)
-
-    def randomize_size(self):
-        self.size = random.randint(10, 100)
-
-    def reset(self):
-        self.randomize_pos()
-        self.randomize_height()
-        self.surf = pygame.Surface((25, 25))
-        self.surf.fill((255, 0, 0))
-        self.rect = self.surf.get_rect()
-        self.rect.move_ip(self.pos[0], self.pos[1])
+    def randomize_height(self, min_h=100, max_h=1000):
+        self.height = random.randint(min_h, max_h)

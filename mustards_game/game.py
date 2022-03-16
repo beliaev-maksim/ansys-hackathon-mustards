@@ -68,7 +68,7 @@ def main_game():
     ufo = UFO(MAX_ALTITUDE, SCREEN_WIDTH, SCREEN_HEIGHT)
     gas = ufo.gas_cloud
     obstacles = pygame.sprite.Group()
-    n_obstacle = 5
+    n_obstacle = 9
     pos_obstacles = [(0, 0)]
     for i in range(0, n_obstacle):
         new_obstacle = Obstacle()
