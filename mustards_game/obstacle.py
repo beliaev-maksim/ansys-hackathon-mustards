@@ -5,7 +5,7 @@ import pygame
 from mustards_game.config import SCREEN_HEIGHT
 from mustards_game.config import SCREEN_WIDTH
 
-obstacle_imgs = ["sprites/mountain.png", "sprites/win_mountain.png"]
+obstacle_imgs = ["sprites/mountain.png", "sprites/win_mountain.png", "sprites/blacksmith.png", "sprites/windmill.png"]
 
 
 class Obstacle(pygame.sprite.Sprite):
@@ -14,13 +14,11 @@ class Obstacle(pygame.sprite.Sprite):
         self.pos = (0, 0)
         self.height = 100
         self.size = 25
-        self.surf = pygame.image.load(obstacle_imgs[random.randint(0, 1)]).convert_alpha()
+        self.surf = pygame.image.load(obstacle_imgs[random.randint(0, len(obstacle_imgs) - 1)]).convert_alpha()
         self.rect = self.surf.get_rect()
-        self.mask = pygame.mask.from_surface(self.surf)
         self.randomize_pos([(0, 0)])
         self.randomize_height()
         self.randomize_size()
-        self.surf = pygame.image.load(obstacle_imgs[random.randint(0, 1)]).convert_alpha()
         self.rect = self.surf.get_rect()
         self.mask = pygame.mask.from_surface(self.surf)
 
