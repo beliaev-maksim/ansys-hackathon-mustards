@@ -62,16 +62,16 @@ class GasCloud:
         self.positions[int(position_x / GAS_SIZE), int(position_y / GAS_SIZE)].altitude += altitude
 
     def degrade_gas(self, screen, position_x, position_y):
-        if position_x + 100 > 900:
-            my_x_max = int(900 / GAS_SIZE) - 1
+        if position_x + 100 > SCREEN_WIDTH:
+            my_x_max = int(SCREEN_WIDTH / GAS_SIZE) - 1
         else:
             my_x_max = int((position_x + 100) / GAS_SIZE)
         if position_x - 100 < 0:
             my_x_min = 0
         else:
             my_x_min = int((position_x - 100) / GAS_SIZE)
-        if position_y + 100 > 900:
-            my_y_max = int(900 / GAS_SIZE) - 1
+        if position_y + 100 > SCREEN_HEIGHT:
+            my_y_max = int(SCREEN_HEIGHT / GAS_SIZE) - 1
         else:
             my_y_max = int((position_y + 100) / GAS_SIZE)
         if position_y - 100 < 0:
