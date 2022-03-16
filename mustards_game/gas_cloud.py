@@ -1,7 +1,8 @@
 import numpy as np
 import pygame
 
-import mustards_game.config as config
+from mustards_game.config import SCREEN_HEIGHT
+from mustards_game.config import SCREEN_WIDTH
 
 # Define constants for the screen width and height
 GAS_SIZE = 5
@@ -81,15 +82,13 @@ class GasCloud:
     """
 
     def __init__(self):
-        self.positions = np.zeros(
-            (int(config.SCREEN_WIDTH / GAS_SIZE), int(config.SCREEN_HEIGHT / GAS_SIZE)), dtype=Gas
-        )
-        for x in range(int(config.SCREEN_WIDTH / GAS_SIZE)):
-            for y in range(int(config.SCREEN_HEIGHT / GAS_SIZE)):
+        self.positions = np.zeros((int(SCREEN_WIDTH / GAS_SIZE), int(SCREEN_HEIGHT / GAS_SIZE)), dtype=Gas)
+        for x in range(int(SCREEN_WIDTH / GAS_SIZE)):
+            for y in range(int(SCREEN_HEIGHT / GAS_SIZE)):
                 self.positions[x, y] = Gas(x * GAS_SIZE, y * GAS_SIZE)
         self.critical = 100 * GAS_SIZE
         self.coverage = 0
-        self.coverage_map = np.zeros((int(config.SCREEN_WIDTH / GAS_SIZE), int(config.SCREEN_HEIGHT / GAS_SIZE)), bool)
+        self.coverage_map = np.zeros((int(SCREEN_WIDTH / GAS_SIZE), int(SCREEN_HEIGHT / GAS_SIZE)), bool)
 
     def update(self, position_x, position_y, altitude):
         """
@@ -126,8 +125,8 @@ class GasCloud:
                     self.positions[x, y].gas_level /= degradation
                     self.positions[x, y].altitude /= degradation
                     if (
-                        x != int(config.SCREEN_WIDTH / GAS_SIZE) - 1
-                        and y != int(config.SCREEN_HEIGHT / GAS_SIZE) - 1
+                        x != int(SCREEN_WIDTH / GAS_SIZE) - 1
+                        and y != int(SCREEN_HEIGHT / GAS_SIZE) - 1
                         and x != 0
                         and y != 0
                     ):
@@ -155,8 +154,8 @@ class GasCloud:
         :return:
         """
         total_volume = 0
-        for x in range(int(config.SCREEN_WIDTH / GAS_SIZE)):
-            for y in range(int(config.SCREEN_HEIGHT / GAS_SIZE)):
+        for x in range(int(SCREEN_WIDTH / GAS_SIZE)):
+            for y in range(int(SCREEN_HEIGHT / GAS_SIZE)):
                 total_volume += self.positions[x, y].gas_level
         return total_volume
 

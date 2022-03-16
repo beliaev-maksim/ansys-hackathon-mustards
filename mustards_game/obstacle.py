@@ -2,7 +2,8 @@ import random
 
 import pygame
 
-import mustards_game.config as config
+from mustards_game.config import SCREEN_HEIGHT
+from mustards_game.config import SCREEN_WIDTH
 
 obstacle_imgs = ["sprites/mountain.png", "sprites/win_mountain.png"]
 
@@ -22,8 +23,8 @@ class Obstacle(pygame.sprite.Sprite):
         self.rect.move_ip(self.pos[0], self.pos[1])
 
     def randomize_pos(self):
-        x = random.randint(100, config.SCREEN_WIDTH - 100)
-        y = random.randint(100, config.SCREEN_HEIGHT - 100)
+        x = random.randint(100, SCREEN_WIDTH - 100)
+        y = random.randint(100, SCREEN_HEIGHT - 100)
 
         self.pos = (x, y)
 

@@ -5,9 +5,12 @@ from pygame.locals import KEYDOWN
 from pygame.locals import MOUSEBUTTONDOWN
 from pygame.locals import QUIT
 
-import mustards_game.config as config
 from mustards_game.background import Background
 from mustards_game.background import Tileset
+from mustards_game.config import INFO_WIDTH
+from mustards_game.config import MAX_ALTITUDE
+from mustards_game.config import SCREEN_HEIGHT
+from mustards_game.config import SCREEN_WIDTH
 from mustards_game.obstacle import Obstacle
 from mustards_game.score_log import ScoreLog
 from mustards_game.ufo import UFO
@@ -16,13 +19,13 @@ from mustards_game.ufo import UFO
 class GameDisplay:
     def __init__(self, image):
 
-        self.screen = pygame.display.set_mode((config.SCREEN_WIDTH + config.INFO_WIDTH, config.SCREEN_HEIGHT))
+        self.screen = pygame.display.set_mode((SCREEN_WIDTH + INFO_WIDTH, SCREEN_HEIGHT))
         self.screen.fill((0, 0, 0))
 
         self.game_background = image
         self.screen.blit(image, (0, 0))
 
-        self.info_board = pygame.Surface((config.INFO_WIDTH, config.SCREEN_HEIGHT))
+        self.info_board = pygame.Surface((INFO_WIDTH, SCREEN_HEIGHT))
         self.info_board.fill((0, 0, 125))
         self.info_board_rect = self.info_board.get_rect()
 
@@ -34,7 +37,7 @@ class GameDisplay:
         self.screen.blit(obj, pos)
 
     def info_display_update(self):
-        self.screen.blit(self.info_board, (config.SCREEN_WIDTH, 0))
+        self.screen.blit(self.info_board, (SCREEN_WIDTH, 0))
 
     def info_display(self, obj, pos):
         self.screen.blit(obj, pos)
@@ -48,8 +51,8 @@ def main_game():
 
     tileset = Tileset("sprites/Grass_01_LQ.png", size=(128, 128))
 
-    m = int(np.floor(config.SCREEN_WIDTH / tileset.size[0]) + 1)
-    n = int(np.floor(config.SCREEN_HEIGHT / tileset.size[1]) + 1)
+    m = int(np.floor(SCREEN_WIDTH / tileset.size[0]) + 1)
+    n = int(np.floor(SCREEN_HEIGHT / tileset.size[1]) + 1)
     background = Background(tileset, size=(m, n))
     background.render()
 
@@ -62,7 +65,7 @@ def main_game():
     score_font = pygame.font.SysFont("monospace", 16)
 
     # game objects
-    ufo = UFO(config.MAX_ALTITUDE, config.SCREEN_WIDTH, config.SCREEN_HEIGHT)
+    ufo = UFO(MAX_ALTITUDE, SCREEN_WIDTH, SCREEN_HEIGHT)
     gas = ufo.gas_cloud
     obstacles = pygame.sprite.Group()
     n_obstacle = 5
@@ -126,13 +129,13 @@ def main_game():
             display.info_display_update()  # update the info board section
 
             text = altitude_font.render(f"Altitude: {ufo.altitude} m", True, (255, 0, 0))
-            display.info_display(text, (config.SCREEN_WIDTH, 20))
+            display.info_display(text, (SCREEN_WIDTH, 20))
 
             fuel = fuel_font.render(f"Fuel left: {ufo.fuel}L", True, (255, 255, 255))
-            display.info_display(fuel, (config.SCREEN_WIDTH, 80))
+            display.info_display(fuel, (SCREEN_WIDTH, 80))
 
             score = score_font.render(f"Lethalcoverage: {gas.get_area_covered()} m²", True, (255, 255, 255))
-            display.info_display(score, (config.SCREEN_WIDTH, 140))
+            display.info_display(score, (SCREEN_WIDTH, 140))
 
             # redraw obstacle heights to be always on top of the gas
             for obstacle in obstacles:
@@ -153,22 +156,18 @@ def main_menu():
         clock = pygame.time.Clock()  # Ensure program maintains a rate of 30 frames per second
         clock.tick(180)
 
-        screen = pygame.display.set_mode((config.SCREEN_WIDTH + config.INFO_WIDTH, config.SCREEN_HEIGHT))
+        screen = pygame.display.set_mode((SCREEN_WIDTH + INFO_WIDTH, SCREEN_HEIGHT))
         screen.fill((0, 0, 0))
 
-        re_start_button = pygame.Rect(
-            (config.SCREEN_WIDTH + config.INFO_WIDTH) // 2 - 100, config.SCREEN_HEIGHT // 2 - 100, 200, 50
-        )
-        end_button = pygame.Rect(
-            (config.SCREEN_WIDTH + config.INFO_WIDTH) // 2 - 100, config.SCREEN_HEIGHT // 2, 200, 50
-        )
+        re_start_button = pygame.Rect((SCREEN_WIDTH + INFO_WIDTH) // 2 - 100, SCREEN_HEIGHT // 2 - 100, 200, 50)
+        end_button = pygame.Rect((SCREEN_WIDTH + INFO_WIDTH) // 2 - 100, SCREEN_HEIGHT // 2, 200, 50)
         pygame.draw.rect(screen, (255, 0, 0), re_start_button)
         pygame.draw.rect(screen, (255, 0, 0), end_button)
         menu_font = pygame.font.SysFont("monospace", 16)
         start_info = menu_font.render("Start the game", True, (255, 255, 255))
         end_info = menu_font.render("End the game", True, (255, 255, 255))
-        screen.blit(start_info, ((config.SCREEN_WIDTH + config.INFO_WIDTH) // 2 - 75, config.SCREEN_HEIGHT // 2 - 88))
-        screen.blit(end_info, ((config.SCREEN_WIDTH + config.INFO_WIDTH) // 2 - 75, config.SCREEN_HEIGHT // 2 + 12))
+        screen.blit(start_info, ((SCREEN_WIDTH + INFO_WIDTH) // 2 - 75, SCREEN_HEIGHT // 2 - 88))
+        screen.blit(end_info, ((SCREEN_WIDTH + INFO_WIDTH) // 2 - 75, SCREEN_HEIGHT // 2 + 12))
 
         click_action = False
         mouse_x, mouse_y = pygame.mouse.get_pos()
