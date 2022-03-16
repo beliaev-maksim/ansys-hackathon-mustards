@@ -25,16 +25,11 @@ class Obstacle(pygame.sprite.Sprite):
         self.pos = (0, 0)
         self.height = 100
         self.size = 25
-        if obs_bool:
-            for obstacle in OBSTACLES:
-                if obstacle["count"] > 0:
-                    obstacle["count"] -= 1
-                    break
-        else:
-            for obstacle in NOT_OBSTACLES:
-                if obstacle["count"] > 0:
-                    obstacle["count"] -= 1
-                    break
+        object_list = OBSTACLES if obs_bool else NOT_OBSTACLES
+        for obstacle in object_list:
+            if obstacle["count"] > 0:
+                obstacle["count"] -= 1
+                break
 
         self.surf = pygame.image.load(obstacle["path"]).convert_alpha()
         self.rect = self.surf.get_rect()
