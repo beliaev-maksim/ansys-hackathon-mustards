@@ -167,7 +167,7 @@ def main_menu():
         pygame.draw.rect(screen, (255, 0, 0), end_button)
         menu_font = pygame.font.SysFont("monospace", 16)
         start_info = menu_font.render("Start the game", True, (255, 255, 255))
-        end_info = menu_font.render("End the game", True, (255, 255, 255))
+        end_info = menu_font.render("Exit the game", True, (255, 255, 255))
         screen.blit(start_info, ((SCREEN_WIDTH + INFO_WIDTH) // 2 - 75, SCREEN_HEIGHT // 2 - 88))
         screen.blit(end_info, ((SCREEN_WIDTH + INFO_WIDTH) // 2 - 75, SCREEN_HEIGHT // 2 + 12))
 

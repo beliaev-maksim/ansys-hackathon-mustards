@@ -8,11 +8,21 @@ from pygame.locals import QUIT
 
 
 class ScoreLog:
+    """
+    this class defines the reading, writing, and displaying game score
+    """
+
     def __init__(self):
         cwd_path = os.getcwd()
         self.sore_log_file = os.path.join(cwd_path, "score_log.txt")
 
     def read_score(self):
+        """
+        this method reads the score in history, if not return none
+        Returns:
+            list
+
+        """
         if not os.path.isfile(self.sore_log_file):
             return None
         else:
@@ -21,6 +31,16 @@ class ScoreLog:
                 return data
 
     def write_score(self, data):
+        """
+        this method write the current score into the score file,
+        and return a list of current three scores history
+        Args:
+            data: int
+
+        Returns:
+            list
+
+        """
         self.new_history = []
         history_data = self.read_score()
         if not history_data:
@@ -59,6 +79,15 @@ class ScoreLog:
         return self.new_history
 
     def display(self, screen):
+        """
+        this method display the scores to the user and give users the option to continue / end the game
+        Args:
+            screen: pygame.screen
+
+        Returns:
+            int: -1 as end the game, 1 as re-start the game
+
+        """
         running = True
         output = 1  # 1 for continue the game, 0 for exit for the main menu, -1 for exit the game completely
 
@@ -71,11 +100,15 @@ class ScoreLog:
         text3 = score_history_font.render(f"Third: {self.new_history[2]} m²", True, (255, 0, 0))
         screen.blit(text3, (350, 420))
 
-        re_start_button = pygame.Rect(270, 500, 400, 50)
+        re_start_button = pygame.Rect(270, 500, 300, 50)
+        end_button = pygame.Rect(270, 600, 300, 50)
         pygame.draw.rect(screen, (255, 0, 0), re_start_button)
+        pygame.draw.rect(screen, (255, 0, 0), end_button)
         menu_font = pygame.font.SysFont("monospace", 16)
-        start_info = menu_font.render("Do you want to restart the game?", True, (255, 255, 255))
-        screen.blit(start_info, (300, 510))
+        start_info = menu_font.render("Try again", True, (255, 255, 255))
+        end_info = menu_font.render("End the game", True, (255, 255, 255))
+        screen.blit(start_info, (360, 510))
+        screen.blit(end_info, (350, 610))
 
         pygame.display.flip()
 
@@ -103,7 +136,10 @@ class ScoreLog:
                 if re_start_button.collidepoint((mouse_x, mouse_y)):
                     output = 1
                     running = False
-                else:
-                    output = 0
+                elif end_button.collidepoint((mouse_x, mouse_y)):
+                    output = -1
                     running = False
+                # else:
+                #     output = 0
+                #     running = False
         return output
