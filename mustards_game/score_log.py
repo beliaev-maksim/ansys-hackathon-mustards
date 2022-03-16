@@ -1,3 +1,4 @@
+import json
 import os
 
 import pygame
@@ -14,7 +15,7 @@ class ScoreLog:
 
     def __init__(self):
         cwd_path = os.getcwd()
-        self.sore_log_file = os.path.join(cwd_path, "score_log.txt")
+        self.sore_log_file = os.path.join(cwd_path, "score_log.json")
 
     def read_score(self):
         """
@@ -23,12 +24,12 @@ class ScoreLog:
             list
 
         """
+
         if not os.path.isfile(self.sore_log_file):
-            return None
+            return {"First": 0, "Second": 0, "Third": 0}
         else:
-            with open(self.sore_log_file, "r") as input:
-                data = input.readlines()
-                return data
+            with open(self.sore_log_file) as json_file:
+                return json.load(json_file)
 
     def write_score(self, data):
         """
@@ -41,42 +42,19 @@ class ScoreLog:
             list
 
         """
-        self.new_history = []
-        history_data = self.read_score()
-        if not history_data:
-            output = open(self.sore_log_file, "w")
-            output.write(str(data) + "\n")
-            output.write("0\n")
-            output.write("0\n")
-            self.new_history = [data, 0, 0]
-            output.close()
-        else:
-            first = int(history_data[0])
-            second = int(history_data[1])
-            third = int(history_data[2])
-            output = open(self.sore_log_file, "w")
-            if data > first:
-                output.write(str(data) + "\n")
-                output.write(str(first) + "\n")
-                output.write(str(second) + "\n")
-                self.new_history = [data, first, second]
-            elif first > data > second:
-                output.write(str(first) + "\n")
-                output.write(str(data) + "\n")
-                output.write(str(second) + "\n")
-                self.new_history = [first, data, second]
-            elif second > data > third:
-                output.write(str(first) + "\n")
-                output.write(str(second) + "\n")
-                output.write(str(data) + "\n")
-                self.new_history = [first, second, data]
-            else:
-                output.write(str(first) + "\n")
-                output.write(str(second) + "\n")
-                output.write(str(third) + "\n")
-                self.new_history = [first, second, third]
-            output.close()
-        return self.new_history
+        self.history_data = self.read_score()
+        if data > self.history_data["First"]:
+            self.history_data["Third"] = self.history_data["Second"]
+            self.history_data["Second"] = self.history_data["First"]
+            self.history_data["First"] = data
+        elif self.history_data["First"] > data > self.history_data["Second"]:
+            self.history_data["Third"] = self.history_data["Second"]
+            self.history_data["Second"] = data
+        elif self.history_data["Second"] > data > self.history_data["Third"]:
+            self.history_data["Third"] = data
+        with open(self.sore_log_file, "w") as output:
+            json.dump(self.history_data, output, indent=4)
+        return self.history_data
 
     def display(self, screen):
         """
@@ -93,11 +71,11 @@ class ScoreLog:
 
         screen.fill((0, 0, 0))
         score_history_font = pygame.font.SysFont("monospace", 16)
-        text1 = score_history_font.render(f"First: {self.new_history[0]} m²", True, (255, 0, 0))
+        text1 = score_history_font.render(f"First: {self.history_data['First']} m²", True, (255, 0, 0))
         screen.blit(text1, (350, 300))
-        text2 = score_history_font.render(f"Second: {self.new_history[1]} m²", True, (255, 0, 0))
+        text2 = score_history_font.render(f"Second: {self.history_data['Second']} m²", True, (255, 0, 0))
         screen.blit(text2, (350, 360))
-        text3 = score_history_font.render(f"Third: {self.new_history[2]} m²", True, (255, 0, 0))
+        text3 = score_history_font.render(f"Third: {self.history_data['Third']} m²", True, (255, 0, 0))
         screen.blit(text3, (350, 420))
 
         re_start_button = pygame.Rect(270, 500, 300, 50)

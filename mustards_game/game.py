@@ -207,9 +207,9 @@ def main_menu():
             history_score = SL.read_score()
             if not history_score:
                 print("You have done great!")
-            elif score < int(history_score[2]):
+            elif score < int(history_score["Third"]):
                 print("Your result is not in the top 3 score. Try again!")
-            elif int(history_score[0]) > score > int(history_score[2]):
+            elif int(history_score["First"]) > score > int(history_score["Third"]):
                 print("Nice, you are in the top score list!")
             else:
                 print("You have a new record!")
