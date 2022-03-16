@@ -28,8 +28,8 @@ class ScoreLog:
         if not os.path.isfile(self.sore_log_file):
             return {"First": 0, "Second": 0, "Third": 0}
         else:
-            json_file = open(self.sore_log_file)
-            return json.load(json_file)
+            with open(self.sore_log_file) as json_file:
+                return json.load(json_file)
 
     def write_score(self, data):
         """
@@ -43,7 +43,6 @@ class ScoreLog:
 
         """
         self.history_data = self.read_score()
-        output = open(self.sore_log_file, "w")
         if data > self.history_data["First"]:
             self.history_data["Third"] = self.history_data["Second"]
             self.history_data["Second"] = self.history_data["First"]
@@ -51,11 +50,10 @@ class ScoreLog:
         elif self.history_data["First"] > data > self.history_data["Second"]:
             self.history_data["Third"] = self.history_data["Second"]
             self.history_data["Second"] = data
-            self.history_data["First"] = self.history_data["First"]
         elif self.history_data["Second"] > data > self.history_data["Third"]:
             self.history_data["Third"] = data
-        json.dump(self.history_data, output, indent=4)
-        output.close()
+        with open(self.sore_log_file, "w") as output:
+            json.dump(self.history_data, output, indent=4)
         return self.history_data
 
     def display(self, screen):
