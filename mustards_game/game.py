@@ -69,9 +69,11 @@ def main_game():
     gas = ufo.gas_cloud
     obstacles = pygame.sprite.Group()
     n_obstacle = 5
+    pos_obstacles = [(0, 0)]
     for i in range(0, n_obstacle):
         new_obstacle = Obstacle()
         obstacles.add(new_obstacle)
+        pos_obstacles.append(new_obstacle.randomize_pos(pos_obstacles))
 
     # Draw static map / obstacles background on screen
     for obstacle in obstacles:
