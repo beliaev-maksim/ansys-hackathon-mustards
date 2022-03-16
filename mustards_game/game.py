@@ -7,16 +7,13 @@ from pygame.locals import QUIT
 
 from mustards_game.background import Background
 from mustards_game.background import Tileset
+from mustards_game.config import INFO_WIDTH
+from mustards_game.config import MAX_ALTITUDE
+from mustards_game.config import SCREEN_HEIGHT
+from mustards_game.config import SCREEN_WIDTH
 from mustards_game.obstacle import Obstacle
 from mustards_game.score_log import ScoreLog
 from mustards_game.ufo import UFO
-
-# Define constants for the screen width and height
-SCREEN_WIDTH = 900
-SCREEN_HEIGHT = 900
-INFO_WIDTH = 500
-
-MAX_ALTITUDE = 1000
 
 
 class GameDisplay:
@@ -207,7 +204,6 @@ def main_menu():
                 print("You have a new record!")
             SL.write_score(score)
             response = SL.display(screen)
-            print("response: ", response)
             if response == -1:
                 click_action = False
                 running = False
@@ -219,6 +215,7 @@ def main_menu():
             running = False
 
         pygame.display.flip()
+    pygame.quit()
 
 
 if __name__ == "__main__":
