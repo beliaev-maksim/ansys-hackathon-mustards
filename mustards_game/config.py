@@ -1,4 +1,4 @@
-# Define constants for the screen width and height
+"""Define constants and settings for the game"""
 from copy import deepcopy
 
 SCREEN_WIDTH = 900

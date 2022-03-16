@@ -3,7 +3,8 @@ import pygame
 
 
 class Tileset:
-    # This class contains images with tiles
+    """Class contains images with tiles."""
+
     def __init__(self, file, size=(512, 512), margin=0, spacing=0):
         """
 
@@ -38,7 +39,8 @@ class Tileset:
 
 
 class Background:
-    # this class creates an image by combining different tiles
+    """Class creates an image by combining different tiles."""
+
     def __init__(self, tileset, size=(4, 4)):
         """
 
