@@ -1,3 +1,5 @@
+import copy
+
 import numpy as np
 import pygame
 from pygame.locals import K_ESCAPE
@@ -5,6 +7,7 @@ from pygame.locals import KEYDOWN
 from pygame.locals import MOUSEBUTTONDOWN
 from pygame.locals import QUIT
 
+import mustards_game.obstacle
 from mustards_game.background import Background
 from mustards_game.background import Tileset
 from mustards_game.config import INFO_WIDTH
@@ -47,8 +50,6 @@ class GameDisplay:
 
 
 def main_game():
-    # pygame.init()
-
     tileset = Tileset("sprites/Grass_01_LQ.png", size=(128, 128))
 
     m = int(np.floor(SCREEN_WIDTH / tileset.size[0]) + 1)
@@ -67,6 +68,8 @@ def main_game():
     # game objects
     ufo = UFO(MAX_ALTITUDE, SCREEN_WIDTH, SCREEN_HEIGHT)
     gas = ufo.gas_cloud
+    mustards_game.obstacle.OBSTACLES = copy.deepcopy(mustards_game.obstacle._OBST_REF)
+    mustards_game.obstacle.NOT_OBSTACLES = copy.deepcopy(mustards_game.obstacle._NOT_OBST_REF)
     obstacles = pygame.sprite.Group()
     humans = pygame.sprite.Group()
     n_humans = 32

@@ -1,4 +1,5 @@
 import random
+from copy import deepcopy
 
 import pygame
 
@@ -17,6 +18,10 @@ NOT_OBSTACLES = [
     {"path": "sprites/Old_man.png", "min": 2, "max": 2, "count": 8},
     {"path": "sprites/Old_Woman.png", "min": 2, "max": 2, "count": 8},
 ]
+
+# make a copy of the lists to reset later
+_OBST_REF = deepcopy(OBSTACLES)
+_NOT_OBST_REF = deepcopy(NOT_OBSTACLES)
 
 
 class Obstacle(pygame.sprite.Sprite):
