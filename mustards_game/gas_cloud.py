@@ -1,10 +1,11 @@
 import numpy as np
 import pygame
 
+from mustards_game.config import SCREEN_HEIGHT
+from mustards_game.config import SCREEN_WIDTH
+
 # Define constants for the screen width and height
 GAS_SIZE = 5
-SCREEN_WIDTH = 900
-SCREEN_HEIGHT = 900
 
 
 class Gas:

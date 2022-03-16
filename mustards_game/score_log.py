@@ -6,10 +6,6 @@ from pygame.locals import KEYDOWN
 from pygame.locals import MOUSEBUTTONDOWN
 from pygame.locals import QUIT
 
-SCREEN_WIDTH = 900
-SCREEN_HEIGHT = 900
-INFO_WIDTH = 500
-
 
 class ScoreLog:
     def __init__(self):
