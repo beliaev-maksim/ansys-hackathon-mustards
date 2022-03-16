@@ -11,15 +11,22 @@ OBSTACLES = [
     {"path": "sprites/blacksmith.png", "min": 10, "max": 200, "count": 2},
     {"path": "sprites/windmill.png", "min": 10, "max": 200, "count": 2},
 ]
+NOT_OBSTACLES = [
+    {"path": "sprites/Man.png", "min": 2, "max": 2, "count": 8},
+    {"path": "sprites/Woman.png", "min": 2, "max": 2, "count": 8},
+    {"path": "sprites/Old_man.png", "min": 2, "max": 2, "count": 8},
+    {"path": "sprites/Old_Woman.png", "min": 2, "max": 2, "count": 8},
+]
 
 
 class Obstacle(pygame.sprite.Sprite):
-    def __init__(self):
+    def __init__(self, obs_bool=True):
         super().__init__()
         self.pos = (0, 0)
         self.height = 100
         self.size = 25
-        for obstacle in OBSTACLES:
+        object_list = OBSTACLES if obs_bool else NOT_OBSTACLES
+        for obstacle in object_list:
             if obstacle["count"] > 0:
                 obstacle["count"] -= 1
                 break
