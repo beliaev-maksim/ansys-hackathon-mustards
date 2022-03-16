@@ -68,18 +68,29 @@ def main_game():
     ufo = UFO(MAX_ALTITUDE, SCREEN_WIDTH, SCREEN_HEIGHT)
     gas = ufo.gas_cloud
     obstacles = pygame.sprite.Group()
+    humans = pygame.sprite.Group()
+    n_humans = 32
     n_obstacle = 9
     pos_obstacles = [(0, 0)]
+
     for i in range(0, n_obstacle):
         new_obstacle = Obstacle()
         obstacles.add(new_obstacle)
         pos_obstacles.append(new_obstacle.randomize_pos(pos_obstacles))
+
+    for i in range(0, n_humans):
+        new_human = Obstacle(False)
+        humans.add(new_human)
+        pos_obstacles.append(new_human.randomize_pos(pos_obstacles))
 
     # Draw static map / obstacles background on screen
     for obstacle in obstacles:
         display.game_display(obstacle.surf, obstacle.rect)
         height = altitude_font.render(f"{obstacle.height}m", True, (255, 255, 255))
         display.game_display(height, (obstacle.pos[0], obstacle.pos[1]))
+
+    for human in humans:
+        display.game_display(human.surf, human.rect)
 
     run_time = 0
     # game run
