@@ -281,7 +281,7 @@ def start_screen():
             "obstacles, you can fly over them if your altitude is high ",
             "enough, but keep in mind, that flying high also consumes more ",
             "fuel! The higher you fly, less dense will be the gas on the ",
-            "round, you may need to fly over the same area twice to ",
+            "ground, you may need to fly over the same area twice to ",
             "increase the density. To control the direction of the ",
             "flying saucer use right and left arrows on your keyboard, use",
             "up and down arrows to increase and decrease your altitude. ",
