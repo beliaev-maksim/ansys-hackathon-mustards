@@ -1,5 +1,5 @@
-import numpy as np
 import pygame
+from numpy import zeros
 
 from mustards_game.config import SCREEN_HEIGHT
 from mustards_game.config import SCREEN_WIDTH
@@ -35,46 +35,6 @@ class Gas:
         elif level > 100 * GAS_SIZE:
             self.gas_surf.fill((200, 200, 0))
 
-    @property
-    def position_x(self):
-        """
-        return gas pixel position x
-        :return: int
-        """
-        return self.gas_position_x
-
-    @property
-    def position_y(self):
-        """
-        return gas pixel position y
-        :return: int
-        """
-        return self.gas_position_y
-
-    @property
-    def surf(self):
-        """
-        return gas pixel surf
-        :return: pygame.Surface
-        """
-        return self.gas_surf
-
-    @property
-    def rect(self):
-        """
-        return gas pixel rect
-        :return: pygame.Surface.get_rect()
-        """
-        return self.gas_rect
-
-    @property
-    def level(self):
-        """
-        return gas level/density
-        :return: int
-        """
-        return self.gas_level
-
 
 class GasCloud:
     """
@@ -82,13 +42,13 @@ class GasCloud:
     """
 
     def __init__(self):
-        self.positions = np.zeros((int(SCREEN_WIDTH / GAS_SIZE), int(SCREEN_HEIGHT / GAS_SIZE)), dtype=Gas)
+        self.positions = zeros((int(SCREEN_WIDTH / GAS_SIZE), int(SCREEN_HEIGHT / GAS_SIZE)), dtype=Gas)
         for x in range(int(SCREEN_WIDTH / GAS_SIZE)):
             for y in range(int(SCREEN_HEIGHT / GAS_SIZE)):
                 self.positions[x, y] = Gas(x * GAS_SIZE, y * GAS_SIZE)
         self.critical = 100 * GAS_SIZE
         self.coverage = 0
-        self.coverage_map = np.zeros((int(SCREEN_WIDTH / GAS_SIZE), int(SCREEN_HEIGHT / GAS_SIZE)), bool)
+        self.coverage_map = zeros((int(SCREEN_WIDTH / GAS_SIZE), int(SCREEN_HEIGHT / GAS_SIZE)), bool)
 
     def update(self, position_x, position_y, altitude):
         """
@@ -102,16 +62,16 @@ class GasCloud:
         self.positions[int(position_x / GAS_SIZE), int(position_y / GAS_SIZE)].altitude += altitude
 
     def degrade_gas(self, screen, position_x, position_y):
-        if position_x + 100 > 900:
-            my_x_max = int(900 / GAS_SIZE) - 1
+        if position_x + 100 > SCREEN_WIDTH:
+            my_x_max = int(SCREEN_WIDTH / GAS_SIZE) - 1
         else:
             my_x_max = int((position_x + 100) / GAS_SIZE)
         if position_x - 100 < 0:
             my_x_min = 0
         else:
             my_x_min = int((position_x - 100) / GAS_SIZE)
-        if position_y + 100 > 900:
-            my_y_max = int(900 / GAS_SIZE) - 1
+        if position_y + 100 > SCREEN_HEIGHT:
+            my_y_max = int(SCREEN_HEIGHT / GAS_SIZE) - 1
         else:
             my_y_max = int((position_y + 100) / GAS_SIZE)
         if position_y - 100 < 0:
@@ -167,7 +127,7 @@ class GasCloud:
             Y = position_y + y[idx]
             if self.positions[X, Y].gas_level != 0:
                 self.positions[X, Y].set_color(self.positions[X, Y].gas_level)
-                myscreen.blit(self.positions[X, Y].surf, self.positions[X, Y].rect)
+                myscreen.blit(self.positions[X, Y].gas_surf, self.positions[X, Y].gas_rect)
                 if self.positions[X, Y].gas_level > self.critical and not self.coverage_map[X, Y]:
                     self.coverage += GAS_SIZE * GAS_SIZE
                     self.coverage_map[X, Y] = True
