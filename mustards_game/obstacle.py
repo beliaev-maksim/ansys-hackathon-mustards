@@ -1,27 +1,11 @@
 import random
-from copy import deepcopy
 
 import pygame
 
+from mustards_game.config import NOT_OBSTACLES
+from mustards_game.config import OBSTACLES
 from mustards_game.config import SCREEN_HEIGHT
 from mustards_game.config import SCREEN_WIDTH
-
-OBSTACLES = [
-    {"path": "sprites/mountain.png", "min": 600, "max": 900, "count": 3},
-    {"path": "sprites/win_mountain.png", "min": 600, "max": 900, "count": 2},
-    {"path": "sprites/blacksmith.png", "min": 10, "max": 200, "count": 2},
-    {"path": "sprites/windmill.png", "min": 10, "max": 200, "count": 2},
-]
-NOT_OBSTACLES = [
-    {"path": "sprites/Man.png", "min": 2, "max": 2, "count": 8},
-    {"path": "sprites/Woman.png", "min": 2, "max": 2, "count": 8},
-    {"path": "sprites/Old_man.png", "min": 2, "max": 2, "count": 8},
-    {"path": "sprites/Old_Woman.png", "min": 2, "max": 2, "count": 8},
-]
-
-# make a copy of the lists to reset later
-_OBST_REF = deepcopy(OBSTACLES)
-_NOT_OBST_REF = deepcopy(NOT_OBSTACLES)
 
 
 class Obstacle(pygame.sprite.Sprite):

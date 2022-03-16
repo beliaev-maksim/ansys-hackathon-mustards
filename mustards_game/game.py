@@ -7,6 +7,7 @@ from pygame.locals import KEYDOWN
 from pygame.locals import MOUSEBUTTONDOWN
 from pygame.locals import QUIT
 
+import mustards_game.config
 import mustards_game.obstacle
 from mustards_game.background import Background
 from mustards_game.background import Tileset
@@ -68,20 +69,18 @@ def main_game():
     # game objects
     ufo = UFO(MAX_ALTITUDE, SCREEN_WIDTH, SCREEN_HEIGHT)
     gas = ufo.gas_cloud
-    mustards_game.obstacle.OBSTACLES = copy.deepcopy(mustards_game.obstacle._OBST_REF)
-    mustards_game.obstacle.NOT_OBSTACLES = copy.deepcopy(mustards_game.obstacle._NOT_OBST_REF)
+    mustards_game.obstacle.OBSTACLES = copy.deepcopy(mustards_game.config._OBST_REF)
+    mustards_game.obstacle.NOT_OBSTACLES = copy.deepcopy(mustards_game.config._NOT_OBST_REF)
     obstacles = pygame.sprite.Group()
     humans = pygame.sprite.Group()
-    n_humans = 32
-    n_obstacle = 9
     pos_obstacles = [(0, 0)]
 
-    for i in range(0, n_obstacle):
+    for i in range(mustards_game.config.n_obstacles):
         new_obstacle = Obstacle()
         obstacles.add(new_obstacle)
         pos_obstacles.append(new_obstacle.randomize_pos(pos_obstacles))
 
-    for i in range(0, n_humans):
+    for i in range(mustards_game.config.n_humans):
         new_human = Obstacle(False)
         humans.add(new_human)
         pos_obstacles.append(new_human.randomize_pos(pos_obstacles))
@@ -110,7 +109,7 @@ def main_game():
 
         if ufo.fuel <= 0:
             # when we are out of fuel, start to decrease altitude
-            ufo.altitude -= 5
+            ufo.altitude -= 1
 
         if ufo.check_hit_wall() or ufo.altitude <= 25:
             # game over
