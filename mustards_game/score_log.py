@@ -139,7 +139,4 @@ class ScoreLog:
                 elif end_button.collidepoint((mouse_x, mouse_y)):
                     output = -1
                     running = False
-                # else:
-                #     output = 0
-                #     running = False
         return output
