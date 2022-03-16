@@ -20,9 +20,6 @@ class Obstacle(pygame.sprite.Sprite):
         self.randomize_pos([(0, 0)])
         self.randomize_height()
         self.randomize_size()
-        self.surf = pygame.image.load(obstacle_imgs[random.randint(0, 1)]).convert_alpha()
-        self.rect = self.surf.get_rect()
-        self.mask = pygame.mask.from_surface(self.surf)
 
     def randomize_pos(self, pos):
         pos_not_found = True
