@@ -1,6 +1,6 @@
 import copy
+from math import floor
 
-import numpy as np
 import pygame
 from pygame.locals import K_ESCAPE
 from pygame.locals import KEYDOWN
@@ -52,8 +52,8 @@ class GameDisplay:
 def main_game():
     tileset = Tileset("sprites/Grass_01_LQ.png", size=(128, 128))
 
-    m = int(np.floor(SCREEN_WIDTH / tileset.size[0]) + 1)
-    n = int(np.floor(SCREEN_HEIGHT / tileset.size[1]) + 1)
+    m = int(floor(SCREEN_WIDTH / tileset.size[0]) + 1)
+    n = int(floor(SCREEN_HEIGHT / tileset.size[1]) + 1)
     background = Background(tileset, size=(m, n))
     background.render()
 
