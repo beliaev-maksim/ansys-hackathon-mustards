@@ -11,6 +11,8 @@ name = "mustards_game"
 authors = [
     {name = "Maksim Beliaev", email = "maksim.beliaev@ansys.com"},
     {name = "Stefan Thoene", email = "stefan.thoene@ansys.com"},
+    {name = "Pengyuan Lu", email = "pengyuan.lu@ansys.com"},
+    {name = "Petr Fomin", email = "petr.fomin@ansys.com"},
 ]
 readme = "README.md"
 requires-python = ">=3.7"
