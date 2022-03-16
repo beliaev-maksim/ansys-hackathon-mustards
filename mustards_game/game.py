@@ -164,16 +164,13 @@ def main_game():
     return gas.get_area_covered(), display.screen
 
 
-def main_menu():
-    pygame.init()
-    running = True
+def main_menu(running=True):
     while running:
         clock = pygame.time.Clock()  # Ensure program maintains a rate of 30 frames per second
         clock.tick(180)
 
         screen = pygame.display.set_mode((SCREEN_WIDTH + INFO_WIDTH, SCREEN_HEIGHT))
         screen.fill((0, 0, 0))
-
         re_start_button = pygame.Rect((SCREEN_WIDTH + INFO_WIDTH) // 2 - 100, SCREEN_HEIGHT // 2 - 100, 200, 50)
         end_button = pygame.Rect((SCREEN_WIDTH + INFO_WIDTH) // 2 - 100, SCREEN_HEIGHT // 2, 200, 50)
         pygame.draw.rect(screen, (255, 0, 0), re_start_button)
@@ -231,6 +228,82 @@ def main_menu():
     pygame.quit()
 
 
-if __name__ == "__main__":
+def start_screen():
+    start_game = True
+    clock = pygame.time.Clock()  # Ensure program maintains a rate of 30 frames per second
+    clock.tick(180)
 
-    main_menu()
+    screen = pygame.display.set_mode((SCREEN_WIDTH + INFO_WIDTH, SCREEN_HEIGHT))
+    screen.fill((0, 0, 0))
+
+    running = True
+
+    while running:
+        for event in pygame.event.get():
+            if event.type == KEYDOWN:
+                running = False
+
+                # Check for QUIT event. If QUIT, then set running to false.
+            elif event.type == QUIT:
+                start_game = False
+                running = False
+
+                # Check for click the buttons
+            elif event.type == MOUSEBUTTONDOWN:
+                running = False
+
+        pos_x = int(SCREEN_WIDTH / 2.5)
+        pos_y = 100
+        fontsize = int(SCREEN_WIDTH / 50)
+        font = pygame.font.SysFont("monospace", fontsize)
+        text = [
+            "Welcome comrade! ",
+            "",
+            "Congratulations on joining the Mustards,",
+            "an anarcho-syndicalist commune! We know that your path was ",
+            "not easy, but you are finally here, and your first job is ",
+            "waiting for you. Are you ready to prove your worthiness? ",
+            "As you know, our goal is to establish a new, fair world ",
+            "order. Unfortunately, not everyone shares our vision and ",
+            "agrees with our genius, this is why we need to put all our ",
+            "efforts in persuading them. In doing so, we have to resort ",
+            "to... certain methods. So strap in and get ready to lift ",
+            "your flying saucer.",
+            "",
+            "Your mission is to carry out commercial flights. On the ",
+            "route your flying saucer will leave chemtrails - clouds of our ",
+            "special gas that helps us control the minds of everyone who ",
+            "had contact with it. Fly over most populated areas and make ",
+            "sure to cover as much ground as possible. Keep an eye on the ",
+            "dashboard on the right, there you can see how much ground has ",
+            "been covered with a lethal dose of the gas, as well as your ",
+            "current altitude and the amount of fuel left. Beware of the ",
+            "obstacles, you can fly over them if your altitude is high ",
+            "enough, but keep in mind, that flying high also consumes more ",
+            "fuel! The higher you fly, less dense will be the gas on the ",
+            "round, you may need to fly over the same area twice to ",
+            "increase the density. To control the direction of the ",
+            "flying saucer use right and left arrows on your keyboard, use",
+            "up and down arrows to increase and decrease your altitude. ",
+            "",
+            "Good luck and may the mustard be with you!",
+            "",
+            "",
+            "",
+            "",
+            "press any key to continue...",
+        ]
+        i = 0
+        for line in text:
+            img = font.render(line, True, (255, 255, 255))
+            screen.blit(img, (pos_x, pos_y + fontsize * i))
+            i = i + 1
+
+        pygame.display.flip()
+    return start_game
+
+
+if __name__ == "__main__":
+    pygame.init()
+    run_game = start_screen()
+    main_menu(run_game)
