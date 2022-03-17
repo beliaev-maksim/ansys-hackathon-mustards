@@ -33,7 +33,7 @@ class Gas:
         Parameters
         ----------
         level : float
-            current gas level
+           Current gas level.
 
         Returns
         -------
