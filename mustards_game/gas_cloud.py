@@ -29,7 +29,7 @@ class Gas:
 
     def set_color(self, level):
         """Function to define the color of a gas pixel based on its level.
-        
+
         Parameters
         ----------
         level : float
@@ -73,7 +73,7 @@ class GasCloud:
 
     def degrade_gas(self, screen, position_x, position_y):
         """Draw and distribute the Gas by pushing parts of its density to the direct neighbouring pixel.
-        
+
         The gas degradation and drawing is limited to a 200x200 square around the given position.
         Parameters
         ----------
@@ -136,16 +136,12 @@ class GasCloud:
         """
         function to draw the gas cloud and Compute the coverage
         draw the pixel and its direct neighbours
+
         Parameters
         ----------
-        screen: pygame.display
-            current displayed screen
+        screen:  pygame.display
         position_x: int
         position_y: int
-
-        Returns
-        -------
-
         """
         x = [0, 1, -1, 0, 0]
         y = [0, 0, 0, 1, -1]

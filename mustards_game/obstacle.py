@@ -33,9 +33,12 @@ class Obstacle(pygame.sprite.Sprite):
 
     def randomize_pos(self, pos):
         """
-        funtion to randomize a static objects position without intersecting other object
-        :param pos: list[tuple]
-        :return:
+        function to randomize a static objects position without intersecting other object
+        Parameter pos are  tuples of x,y positions
+
+        Parameters
+        ----------
+        pos: list of int tuples
         """
         pos_not_found = True
         while pos_not_found:
@@ -56,7 +59,10 @@ class Obstacle(pygame.sprite.Sprite):
     def randomize_height(self, min_h=100, max_h=1000):
         """
         function to randomize the height of the object within given range
-        :param min_h: int
-        :param max_h: int
+
+        Parameters
+        ----------
+        min_h: int
+        max_h: int
         """
         self.height = random.randint(min_h, max_h)
