@@ -28,8 +28,8 @@ class Gas:
         self.gas_rect.move_ip(self.gas_position_x, self.gas_position_y)
 
     def set_color(self, level):
-        """
-        function to define the color of a gas pixel based on its level
+        """Function to define the color of a gas pixel based on its level.
+        
         Parameters
         ----------
         level : float
