@@ -149,7 +149,7 @@ def main_game():
             fuel = fuel_font.render(f"Fuel left: {ufo.fuel}L", True, (255, 255, 255))
             display.info_display(fuel, (SCREEN_WIDTH, 80))
 
-            score = score_font.render(f"Lethalcoverage: {gas.get_area_covered()} m²", True, (255, 255, 255))
+            score = score_font.render(f"Lethalcoverage: {gas.get_area_covered} m²", True, (255, 255, 255))
             display.info_display(score, (SCREEN_WIDTH, 140))
 
             # redraw obstacle heights to be always on top of the gas
@@ -161,7 +161,7 @@ def main_game():
         display.update()
         run_time += 1
 
-    return gas.get_area_covered(), display.screen
+    return gas.get_area_covered, display.screen
 
 
 def main_menu(running=True):
