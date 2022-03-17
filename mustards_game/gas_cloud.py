@@ -42,7 +42,7 @@ class Gas:
 
 class GasCloud:
     """
-    this class describe the gas cloud separated by airplane
+    this class describe the gas cloud created by Ufo
     """
 
     def __init__(self):
