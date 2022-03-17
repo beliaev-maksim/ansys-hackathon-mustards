@@ -124,6 +124,7 @@ class GasCloud:
                         self.positions[x, y + 1].altitude = self.positions[x, y].altitude
                     self.draw(screen, x, y)
 
+    @property
     def get_area_covered(self):
         """
         This function returns area covered by GasCloud.
