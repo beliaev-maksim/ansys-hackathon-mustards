@@ -30,7 +30,14 @@ class Gas:
     def set_color(self, level):
         """
         function to define the color of a gas pixel based on its level
-        :param level: float; current gas level
+        Parameters
+        ----------
+        level: float
+            current gas level
+
+        Returns
+        -------
+
         """
         if 30 < level < 100:
             self.gas_surf.fill((50 * level / 100, 50 * level / 100, 0))
@@ -57,10 +64,15 @@ class GasCloud:
     def update(self, position_x, position_y, altitude):
         """
         This function add the density of gas pixel and altitude of a gas pixel
-        :param altitude: int
-        :param position_x: int
-        :param position_y: int
-        :return: None
+        Parameters
+        ----------
+        position_x: int
+        position_y: int
+        altitude: int
+
+        Returns
+        -------
+
         """
         self.positions[int(position_x / GAS_SIZE), int(position_y / GAS_SIZE)].gas_level += 2500 / GAS_SIZE
         self.positions[int(position_x / GAS_SIZE), int(position_y / GAS_SIZE)].altitude += altitude
@@ -69,13 +81,17 @@ class GasCloud:
         """
         function draw and distribute the Gas by pushing parts of its density to the direct neighbouring pixel
         the gas degradation and drawing is limited to a 200x200 square around the given position
+        Parameters
+        ----------
+        screen: pygame.display
+            current displayed screen
+        position_x: int
+        position_y: int
 
-        :param screen:  pygame.display
-                        current displayed screen
-        :param position_x: int
-        :param position_y: int
+        Returns
+        -------
+
         """
-
         if position_x + 100 > SCREEN_WIDTH:
             my_x_max = int(SCREEN_WIDTH / GAS_SIZE) - 1
         else:
@@ -117,19 +133,26 @@ class GasCloud:
     def get_area_covered(self):
         """
         This function return area covered by GasCloud
-        :return: int
+        Returns: int
+            Area covered
+        -------
         """
-
         return self.coverage
 
     def draw(self, screen, position_x, position_y):
         """
         function to draw the gas cloud and Compute the coverage
         draw the pixel and its direct neighbours
-        :param screen:  pygame.display
-                        current displayed screen
-        :param position_x: int
-        :param position_y: int
+        Parameters
+        ----------
+        screen: pygame.display
+            current displayed screen
+        position_x: int
+        position_y: int
+
+        Returns
+        -------
+
         """
         x = [0, 1, -1, 0, 0]
         y = [0, 0, 0, 1, -1]
