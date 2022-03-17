@@ -15,39 +15,10 @@ from mustards_game.config import INFO_WIDTH
 from mustards_game.config import MAX_ALTITUDE
 from mustards_game.config import SCREEN_HEIGHT
 from mustards_game.config import SCREEN_WIDTH
+from mustards_game.display import GameDisplay
 from mustards_game.obstacle import Obstacle
 from mustards_game.score_log import ScoreLog
 from mustards_game.ufo import UFO
-
-
-class GameDisplay:
-    def __init__(self, image):
-
-        self.screen = pygame.display.set_mode((SCREEN_WIDTH + INFO_WIDTH, SCREEN_HEIGHT))
-        self.screen.fill((0, 0, 0))
-
-        self.game_background = image
-        self.screen.blit(image, (0, 0))
-
-        self.info_board = pygame.Surface((INFO_WIDTH, SCREEN_HEIGHT))
-        self.info_board.fill((0, 0, 125))
-        self.info_board_rect = self.info_board.get_rect()
-
-    def game_display_update(self):
-        self.screen.fill((0, 0, 0))
-        self.screen.blit(self.game_background, (0, 0))
-
-    def game_display(self, obj, pos):
-        self.screen.blit(obj, pos)
-
-    def info_display_update(self):
-        self.screen.blit(self.info_board, (SCREEN_WIDTH, 0))
-
-    def info_display(self, obj, pos):
-        self.screen.blit(obj, pos)
-
-    def update(self):
-        pygame.display.flip()
 
 
 def main_game():
