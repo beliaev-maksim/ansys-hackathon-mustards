@@ -63,30 +63,24 @@ class GasCloud:
         This function add the density of gas pixel and altitude of a gas pixel
         Parameters
         ----------
-        position_x: int
-        position_y: int
-        altitude: int
-
-        Returns
-        -------
+        position_x : int
+        position_y : int
+        altitude : int
 
         """
         self.positions[int(position_x / GAS_SIZE), int(position_y / GAS_SIZE)].gas_level += 2500 / GAS_SIZE
         self.positions[int(position_x / GAS_SIZE), int(position_y / GAS_SIZE)].altitude += altitude
 
     def degrade_gas(self, screen, position_x, position_y):
-        """
-        function draw and distribute the Gas by pushing parts of its density to the direct neighbouring pixel
-        the gas degradation and drawing is limited to a 200x200 square around the given position
+        """Draw and distribute the Gas by pushing parts of its density to the direct neighbouring pixel.
+        
+        The gas degradation and drawing is limited to a 200x200 square around the given position.
         Parameters
         ----------
-        screen: pygame.display
-            current displayed screen
-        position_x: int
-        position_y: int
-
-        Returns
-        -------
+        screen : pygame.display
+            Current displayed screen.
+        position_x : int
+        position_y : int
 
         """
         if position_x + 100 > SCREEN_WIDTH:
