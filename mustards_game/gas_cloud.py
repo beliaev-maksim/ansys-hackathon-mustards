@@ -32,7 +32,7 @@ class Gas:
         function to define the color of a gas pixel based on its level
         Parameters
         ----------
-        level: float
+        level : float
             current gas level
 
         Returns
