@@ -10,7 +10,7 @@ from mustards_game.config import SCREEN_WIDTH
 
 class Obstacle(pygame.sprite.Sprite):
     """
-    this class describes the properties and static objects on the map
+    This class describes the properties and static objects on the map.
     """
 
     def __init__(self, obs_bool=True):
@@ -33,7 +33,7 @@ class Obstacle(pygame.sprite.Sprite):
 
     def randomize_pos(self, pos):
         """
-        function to randomize a static objects position without intersecting other object
+        Function to randomize a static objects position without intersecting other object
         Parameter pos are  tuples of x,y positions
 
         Parameters
@@ -58,7 +58,7 @@ class Obstacle(pygame.sprite.Sprite):
 
     def randomize_height(self, min_h=100, max_h=1000):
         """
-        function to randomize the height of the object within given range
+        Function to randomize the height of the object within given range.
 
         Parameters
         ----------

@@ -10,7 +10,7 @@ GAS_SIZE = 5
 
 class Gas:
     """
-    this class structure describes the information of each gas pixel
+    This class structure describes the information of each gas pixel.
     """
 
     def __init__(self, position_x, position_y):
@@ -28,7 +28,8 @@ class Gas:
         self.gas_rect.move_ip(self.gas_position_x, self.gas_position_y)
 
     def set_color(self, level):
-        """Function to define the color of a gas pixel based on its level.
+        """
+        Function to define the color of a gas pixel based on its level.
 
         Parameters
         ----------
@@ -46,7 +47,7 @@ class Gas:
 
 class GasCloud:
     """
-    this class describe the gas cloud created by Ufo
+    This class describe the gas cloud created by Ufo.
     """
 
     def __init__(self):
@@ -60,7 +61,8 @@ class GasCloud:
 
     def update(self, position_x, position_y, altitude):
         """
-        This function add the density of gas pixel and altitude of a gas pixel
+        This function add the density of gas pixel and altitude of a gas pixel.
+
         Parameters
         ----------
         position_x : int
@@ -72,9 +74,10 @@ class GasCloud:
         self.positions[int(position_x / GAS_SIZE), int(position_y / GAS_SIZE)].altitude += altitude
 
     def degrade_gas(self, screen, position_x, position_y):
-        """Draw and distribute the Gas by pushing parts of its density to the direct neighbouring pixel.
-
+        """
+        Draw and distribute the Gas by pushing parts of its density to the direct neighbouring pixel.
         The gas degradation and drawing is limited to a 200x200 square around the given position.
+
         Parameters
         ----------
         screen : pygame.display
@@ -123,7 +126,8 @@ class GasCloud:
 
     def get_area_covered(self):
         """
-        This function return area covered by GasCloud
+        This function returns area covered by GasCloud.
+
         Returns
         -------
         area : int
@@ -134,8 +138,8 @@ class GasCloud:
 
     def draw(self, screen, position_x, position_y):
         """
-        function to draw the gas cloud and Compute the coverage
-        draw the pixel and its direct neighbours
+        Function to draw the gas cloud and Compute the coverage.
+        It draws the pixel and its direct neighbours.
 
         Parameters
         ----------
