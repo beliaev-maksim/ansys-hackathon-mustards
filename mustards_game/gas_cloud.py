@@ -130,7 +130,9 @@ class GasCloud:
     def get_area_covered(self):
         """
         This function return area covered by GasCloud
-        Returns: int
+        Returns
+        -------
+        area : int
             Area covered
         -------
         """
