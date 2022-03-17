@@ -143,9 +143,9 @@ class GasCloud:
 
         Parameters
         ----------
-        screen:  pygame.display
-        position_x: int
-        position_y: int
+        screen :  pygame.display
+        position_x : int
+        position_y : int
         """
         x = [0, 1, -1, 0, 0]
         y = [0, 0, 0, 1, -1]
