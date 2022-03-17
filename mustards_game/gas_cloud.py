@@ -35,9 +35,6 @@ class Gas:
         level : float
            Current gas level.
 
-        Returns
-        -------
-
         """
         if 30 < level < 100:
             self.gas_surf.fill((50 * level / 100, 50 * level / 100, 0))
