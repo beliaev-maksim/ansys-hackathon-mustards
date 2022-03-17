@@ -7,7 +7,7 @@ from mustards_game.config import SCREEN_WIDTH
 
 class GameDisplay:
     """
-    this class structure provides the method to display and update the game screen
+    this class structure provides the method to display and update the game screen.
     """
 
     def __init__(self, image):
@@ -60,7 +60,7 @@ class GameDisplay:
 
     def info_display(self, obj, pos):
         """
-        Function to display at the information section with the object provided at the position provided
+        Function to display at the information section with the object provided at the position provided.
         Parameters
         ----------
         obj : pygame.font
@@ -74,7 +74,7 @@ class GameDisplay:
 
     def update(self):
         """
-        Function to update current display screen
+        Function to update current display screen.
         Returns
         -------
 
