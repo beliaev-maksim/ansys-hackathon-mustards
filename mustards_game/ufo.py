@@ -10,18 +10,19 @@ from mustards_game.gas_cloud import GasCloud
 
 
 class UFO(pygame.sprite.Sprite):
-    """
-    This class describes the UFO and its methods.
-    """
+    """This class describes the UFO and its methods."""
 
     def __init__(self, max_altitude=1000, screen_width=900, screen_height=900):
         """
 
         Parameters
         ----------
-        max_altitude: int: max altitude the ufo can achieve in meter.
-        screen_width: int: screen width in pixels
-        screen_height: int: screen height in pixels
+        max_altitude: int:
+            Maximum altitude the ufo can achieve in meter.
+        screen_width: int:
+            Screen width in pixels
+        screen_height: int:
+            Screen height in pixels
         """
         super().__init__()
         self.size = 25
@@ -42,9 +43,7 @@ class UFO(pygame.sprite.Sprite):
         self.screen_height = screen_height
 
     def fly(self):
-        """
-        This method updates the position of the ufo on the screen for each iteration of the main game loop.
-        """
+        """This method updates the position of the ufo on the screen for each iteration of the main game loop."""
 
         # Store new float position
         self.current_pos_x += self.direction[0]
@@ -62,17 +61,12 @@ class UFO(pygame.sprite.Sprite):
         self.consume_fuel()
 
     def consume_fuel(self):
-        """
-        Reduce amount of fuel in the tak for each iteration of the main loop.
-        """
+        """Reduce amount of fuel in the tak for each iteration of the main loop."""
         if self.fuel > 0:
             self.fuel -= 1
 
     def check_hit_wall(self):
-        """
-        Check if ufo hits the outer boundaries of the screen.
-        This should end the game.
-        """
+        """Check if ufo hits the outer boundaries of the screen. This should end the game."""
         if (
             self.rect.left < 0
             or self.rect.right > self.screen_width
