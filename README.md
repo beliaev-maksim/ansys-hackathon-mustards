@@ -12,13 +12,10 @@ Upon starting the game you will see a welcome screen:
 
 ![welcome screen](mustards_game/screenshots/welcome_screen.png)
 
-Start game screen:
-
-![start game screen](mustards_game/screenshots/start_screen.png)
-
 Main game window:
 
 ![main game window](mustards_game/screenshots/game.png)
+![main game window](mustards_game/screenshots/game2.png)
 
 End game and best score window:
 
