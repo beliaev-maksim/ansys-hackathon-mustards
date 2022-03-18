@@ -20,6 +20,9 @@ NOT_OBSTACLES = [
     {"path": "sprites/Old_Woman.png", "min": 2, "max": 2, "count": 8},
 ]
 
+left_right = r"sprites/LeftRight.png"
+up_down = r"sprites/UpDown.png"
+padding_edge = r"sprites/padding_edge.png"
 n_humans = sum([obj["count"] for obj in NOT_OBSTACLES])
 n_obstacles = sum([obj["count"] for obj in OBSTACLES])
 
