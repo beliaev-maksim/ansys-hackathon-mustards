@@ -14,7 +14,6 @@ Upon starting the game you will see a welcome screen:
 
 Main game window:
 
-![main game window](mustards_game/screenshots/game.png)
 ![main game window](mustards_game/screenshots/game2.png)
 
 End game and best score window:
