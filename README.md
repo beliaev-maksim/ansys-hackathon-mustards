@@ -8,15 +8,5 @@ to carry that payload alongside regular passengers. Results should be in the for
 energy cost in Joules, as well as an optional visual representation on a map and the density of the gas at ground level. 
 The threshold gas level for visualization on the ground, as well as the plane height, should be specifiable by the user.
 
-Upon starting the game you will see a welcome screen:
-
-![welcome screen](mustards_game/screenshots/welcome_screen.png)
-
-Main game window:
-
-![main game window](mustards_game/screenshots/game.png)
-![main game window](mustards_game/screenshots/game2.png)
-
-End game and best score window:
-
-![end game window](mustards_game/screenshots/end_screen.png)
+# Game interface
+You can find screenshots of game interface following [this link](docs/game_interface.md)
