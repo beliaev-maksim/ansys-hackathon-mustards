@@ -8,6 +8,9 @@ to carry that payload alongside regular passengers. Results should be in the for
 energy cost in Joules, as well as an optional visual representation on a map and the density of the gas at ground level. 
 The threshold gas level for visualization on the ground, as well as the plane height, should be specifiable by the user.
 
+# Game interface
+You can find screenshots of game interface following [this link](docs/game_interface.md)
+
 # Installation Instruction
 
 # User Guide
