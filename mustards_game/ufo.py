@@ -6,6 +6,7 @@ from pygame.locals import K_LEFT
 from pygame.locals import K_RIGHT
 from pygame.locals import K_UP
 
+from mustards_game.config import ufo_sprite
 from mustards_game.gas_cloud import GasCloud
 
 
@@ -26,7 +27,7 @@ class UFO(pygame.sprite.Sprite):
         """
         super().__init__()
         self.size = 25
-        self.surf = pygame.image.load("sprites/ufo_25.png").convert_alpha()
+        self.surf = pygame.image.load(ufo_sprite).convert_alpha()
         self.rect = self.surf.get_rect()
 
         # apply mask to make a perfect collision based on pixels

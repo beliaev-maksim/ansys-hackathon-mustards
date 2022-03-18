@@ -22,7 +22,7 @@ from mustards_game.ufo import UFO
 
 
 def main_game():
-    tileset = Tileset("sprites/Grass_01_LQ.png", size=(128, 128))
+    tileset = Tileset(mustards_game.config.background_sprite, size=(128, 128))
 
     m = int(floor(SCREEN_WIDTH / tileset.size[0]) + 1)
     n = int(floor(SCREEN_HEIGHT / tileset.size[1]) + 1)
