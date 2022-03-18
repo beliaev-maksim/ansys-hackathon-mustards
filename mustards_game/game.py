@@ -45,6 +45,9 @@ def main_game():
     obstacles = pygame.sprite.Group()
     humans = pygame.sprite.Group()
     pos_obstacles = [(0, 0)]
+    up_down_sprite = pygame.image.load(mustards_game.config.up_down).convert_alpha()
+    left_right_sprite = pygame.image.load(mustards_game.config.left_right).convert_alpha()
+    padding_edge = pygame.image.load(mustards_game.config.padding_edge).convert_alpha()
 
     for i in range(mustards_game.config.n_obstacles):
         new_obstacle = Obstacle()
@@ -115,13 +118,23 @@ def main_game():
             display.info_display_update()  # update the info board section
 
             text = altitude_font.render(f"Altitude: {ufo.altitude} m", True, (255, 0, 0))
-            display.info_display(text, (SCREEN_WIDTH, 20))
+            display.info_display(text, (SCREEN_WIDTH + 40, 20))
 
             fuel = fuel_font.render(f"Fuel left: {ufo.fuel}L", True, (255, 255, 255))
-            display.info_display(fuel, (SCREEN_WIDTH, 80))
+            display.info_display(fuel, (SCREEN_WIDTH + 40, 80))
 
             score = score_font.render(f"Lethalcoverage: {gas.get_area_covered} m²", True, (255, 255, 255))
-            display.info_display(score, (SCREEN_WIDTH, 140))
+            display.info_display(score, (SCREEN_WIDTH + 40, 140))
+
+            display.info_display(up_down_sprite, (SCREEN_WIDTH + 50, 700))
+            up_down_text = score_font.render("Control UFO to rise or descends", True, (255, 255, 255))
+            display.info_display(up_down_text, (SCREEN_WIDTH + 45, 760))
+
+            display.info_display(left_right_sprite, (SCREEN_WIDTH + 50, 800))
+            left_right_text = score_font.render("Control UFO to fly toward left or right", True, (255, 255, 255))
+            display.info_display(left_right_text, (SCREEN_WIDTH + 45, 860))
+
+            display.info_display(padding_edge, (SCREEN_WIDTH - 5, -10))
 
             # redraw obstacle heights to be always on top of the gas
             for obstacle in obstacles:
