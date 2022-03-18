@@ -13,7 +13,7 @@ You can find screenshots of game interface following [this link](docs/game_inter
 
 # Installation Instruction
 You can start the game directly from compiled executable, just unpack the archive and 
-run `game.exe` [->download<-](https://github.com/beliaev-maksim/ansys-hackathon-mustards/releases/download/0.0.1/game.zip)
+run `game.exe` [->download<-](https://github.com/beliaev-maksim/ansys-hackathon-mustards/releases/download/0.0.1/game.exe)
 
 > Note: due to antivirus check start of the game may take up to 80 seconds
 
