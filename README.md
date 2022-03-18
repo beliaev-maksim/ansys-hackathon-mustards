@@ -14,6 +14,14 @@ You can find screenshots of game interface following [this link](docs/game_inter
 # Installation Instruction
 
 # User Guide
+The user can control the UFO using the Arrow keys
+* To change altitude use:
+
+    ![Upkey](mustards_game/sprites/UpDown.png)
+
+* To rotate use:
+
+    ![Upkey](mustards_game/sprites/LeftRight.png)
 
 # What did we learn
 
