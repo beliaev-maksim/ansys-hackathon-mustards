@@ -43,3 +43,7 @@ Home = "https://github.com/beliaev-maksim/ansys-hackathon-mustards"
 [tool.isort]
 profile = "black"
 
+# CLI script command
+[project.scripts]
+mustards_game = "mustards_game.game:play"
+

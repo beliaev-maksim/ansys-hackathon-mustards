@@ -287,7 +287,11 @@ def start_screen():
     return start_game
 
 
-if __name__ == "__main__":
+def play():
     pygame.init()
     run_game = start_screen()
     main_menu(run_game)
+
+
+if __name__ == "__main__":
+    play()
