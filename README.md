@@ -21,7 +21,7 @@ Our main idea when joining the Hackathon was to create something interesting and
 Here some bullet Points of our main lessons we learned: 
 
 * How to set project goals
-* How to split task among all team members
+* How to split tasks among all team members
 * Utilize GitHub platform to effectively collaborate
 * Practice working in an agile environment
 * Create project configuration files, eg. leverage pyproject.toml file
