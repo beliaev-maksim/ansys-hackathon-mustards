@@ -17,9 +17,9 @@ The threshold gas level for visualization on the ground, as well as the plane he
 Our main idea when joining the Hackathon was to create something interesting and having fun.
 Here some bullet Points of our main lessons we learned: 
 
-• Collaborate on GitHub effectively 
-• Leverage pyproject.toml files for requirements
-• How to build a local virtual python environment
-• Review Pull request
-• Analyse code runtime
-• How to use numpy docstring
+* Collaborate on GitHub effectively 
+* Leverage pyproject.toml files for requirements
+* How to build a local virtual python environment
+* Review Pull request
+* Analyse code runtime
+* How to use numpy docstring
