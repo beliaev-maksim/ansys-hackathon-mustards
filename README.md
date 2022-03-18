@@ -13,18 +13,19 @@ You can find screenshots of game interface following [this link](docs/game_inter
 
 # Installation Instruction
 You can start the game directly from compiled executable, just unpack the archive and 
-run `game.exe` [download](https://github.com/beliaev-maksim/ansys-hackathon-mustards/releases/download/0.0.1/game.zip)
+run `game.exe` [->download<-](https://github.com/beliaev-maksim/ansys-hackathon-mustards/releases/download/0.0.1/game.zip)
 
 > Note: due to antivirus check start of the game may take up to 80 seconds
 
-Alternatively, 
-you can run via your Python Interpreter of version 3.7+
-Download source code from [source.zip](https://github.com/beliaev-maksim/ansys-hackathon-mustards/archive/refs/tags/0.0.1.zip)
-Unpack the archive, open windows command line in unpacked folder and run following code to start the game:
-````bash
-pip install .
-mustards_game
-````
+Alternatively, you can run via your Python Interpreter of version 3.7+.  
+* Download source code from [source.zip](https://github.com/beliaev-maksim/ansys-hackathon-mustards/archive/refs/tags/0.0.1.zip)  
+* Unpack the archive
+* Open windows command line in unpacked folder 
+* Run following code to start the game:
+  ```bash
+  pip install .
+  mustards_game
+  ```
 
 # User Guide
 The user can control the UFO using the keyboard.
